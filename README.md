@@ -1,4 +1,4 @@
-# Tech Portfolio
+# Tech Portfolio 
 
 Portfólio de um coletivo de tecnologia, refatorado de um protótipo único do
 Claude Design para uma aplicação **React + TypeScript + Vite** com uma camada
