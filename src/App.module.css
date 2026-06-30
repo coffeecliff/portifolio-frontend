@@ -1,0 +1,24 @@
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      900px 600px at 78% 18%,
+      rgba(138, 43, 226, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(700px 700px at 12% 85%, rgba(255, 0, 255, 0.14), transparent 60%),
+    var(--color-bg);
+}
+
+.main {
+  position: relative;
+  z-index: 10;
+}

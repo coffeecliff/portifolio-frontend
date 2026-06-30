@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="./support.js"></script>
+</head>
+
+<body>
+  <x-dc>
+    <helmet>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+      <script src="image-slot.js"></script>
+      <style>
+        * {
+          box-sizing: border-box
+        }
+
+        html {
+          scroll-behavior: smooth
+        }
+
+        body {
+          margin: 0;
+          background: #000000;
+          color: #fff;
+          font-family: 'Manrope', system-ui, sans-serif;
+          overflow-x: hidden;
+          -webkit-font-smoothing: antialiased
+        }
+
+        ::selection {
+          background: rgba(255, 0, 255, 0.35)
+        }
+
+        ::-webkit-scrollbar {
+          width: 10px
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #000
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(#8A2BE2, #FF00FF);
+          border-radius: 8px
+        }
+
+        @keyframes spin3d {
+          0% {
+            transform: rotateX(-18deg) rotateY(0deg)
+          }
+
+          100% {
+            transform: rotateX(-18deg) rotateY(360deg)
+          }
+        }
+
+        @keyframes floaty {
+
+          0%,
+          100% {
+            transform: translateY(0)
+          }
+
+          50% {
+            transform: translateY(-18px)
+          }
+        }
+
+        @keyframes floaty2 {
+
+          0%,
+          100% {
+            transform: translateY(0) rotate(-6deg)
+          }
+
+          50% {
+            transform: translateY(-12px) rotate(-6deg)
+          }
+        }
+
+        @keyframes pulseGlow {
+
+          0%,
+          100% {
+            opacity: .55;
+            transform: translate(-50%, -50%) scale(1)
+          }
+
+          50% {
+            opacity: .9;
+            transform: translate(-50%, -50%) scale(1.12)
+          }
+        }
+
+        @keyframes shimmerLine {
+          0% {
+            background-position: 0% 50%
+          }
+
+          100% {
+            background-position: 200% 50%
+          }
+        }
+      </style>
+    </helmet>
+
+    <div style="position:relative;width:100%;min-height:100vh;">
+
+      <!-- fixed ambient glows + interactive wave behind everything -->
+      <div
+        style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 600px at 78% 18%, rgba(138,43,226,0.28), transparent 60%), radial-gradient(700px 700px at 12% 85%, rgba(255,0,255,0.14), transparent 60%), #000000;">
+      </div>
+      <canvas id="tpWave"
+        style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;"></canvas>
+
+      <!-- ===== NAV ===== -->
+      <nav
+        style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:50;width:min(1200px,calc(100% - 32px));display:flex;align-items:center;justify-content:space-between;padding:12px 14px 12px 22px;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(138,43,226,0.18);">
+        <a href="#topo" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;">
+          <span
+            style="width:26px;height:26px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(135deg,#8A2BE2,#FF00FF);box-shadow:0 0 18px rgba(255,0,255,0.6);font-size:13px;">◈</span>
+          <span style="font-family:'Space Grotesk';font-weight:700;letter-spacing:0.12em;font-size:13px;">EQUIPE
+            TECH</span>
+        </a>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <a href="#equipe"
+            style="text-decoration:none;color:rgba(255,255,255,0.72);font-size:13px;font-weight:500;padding:8px 12px;border-radius:10px;"
+            style-hover="color:#fff;background:rgba(255,255,255,0.07);">Equipe</a>
+          <a href="#projetos"
+            style="text-decoration:none;color:rgba(255,255,255,0.72);font-size:13px;font-weight:500;padding:8px 12px;border-radius:10px;"
+            style-hover="color:#fff;background:rgba(255,255,255,0.07);">Projetos</a>
+          <a href="#stack"
+            style="text-decoration:none;color:rgba(255,255,255,0.72);font-size:13px;font-weight:500;padding:8px 12px;border-radius:10px;"
+            style-hover="color:#fff;background:rgba(255,255,255,0.07);">Stack</a>
+          <a href="#trajetoria"
+            style="text-decoration:none;color:rgba(255,255,255,0.72);font-size:13px;font-weight:500;padding:8px 12px;border-radius:10px;"
+            style-hover="color:#fff;background:rgba(255,255,255,0.07);">Trajetória</a>
+          <a href="#contato"
+            style="margin-left:6px;text-decoration:none;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:11px;background:linear-gradient(135deg,rgba(138,43,226,0.9),rgba(255,0,255,0.75));border:1px solid rgba(255,255,255,0.25);box-shadow:0 0 22px rgba(255,0,255,0.4);"
+            style-hover="box-shadow:0 0 32px rgba(255,0,255,0.7);transform:translateY(-1px);">Vamos conversar</a>
+        </div>
+      </nav>
+
+      <!-- ===== HERO ===== -->
+      <header id="topo" style="position:relative;z-index:10;width:100%;height:100vh;min-height:760px;overflow:hidden;">
+        <!-- title block -->
+        <div style="position:absolute;top:14%;left:max(40px,calc((100% - 1200px)/2 + 4px));max-width:560px;z-index:12;">
+          <div
+            style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.34em;color:#00FFFF;margin-bottom:22px;text-shadow:0 0 14px rgba(0,255,255,0.6);">
+            COLETIVO DE TECNOLOGIA DE ELITE</div>
+          <h1
+            style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(54px,7vw,104px);line-height:0.94;letter-spacing:-0.02em;margin:0;color:#fff;text-shadow:0 4px 60px rgba(138,43,226,0.45);">
+            Tech<br>Portfolio</h1>
+          <p style="margin:26px 0 0;font-size:18px;line-height:1.6;color:rgba(255,255,255,0.74);max-width:440px;">
+            Construímos produtos digitais de alta performance. Engenharia, design e produto — sob um só teto, em ritmo
+            de estúdio.</p>
+          <div style="display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;">
+            <a href="#projetos"
+              style="text-decoration:none;color:#fff;font-weight:600;font-size:15px;padding:14px 26px;border-radius:14px;background:linear-gradient(135deg,rgba(138,43,226,0.95),rgba(255,0,255,0.8));border:1px solid rgba(255,255,255,0.25);box-shadow:0 0 30px rgba(255,0,255,0.45);"
+              style-hover="box-shadow:0 0 44px rgba(255,0,255,0.8);transform:translateY(-2px);">Ver projetos</a>
+            <a href="#equipe"
+              style="text-decoration:none;color:#fff;font-weight:600;font-size:15px;padding:14px 26px;border-radius:14px;background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.18);"
+              style-hover="background:rgba(255,255,255,0.12);transform:translateY(-2px);">Conhecer a equipe</a>
+          </div>
+        </div>
+
+        <!-- 3D glass cube -->
+        <div
+          style="position:absolute;top:13%;right:max(20px,calc((100% - 1200px)/2 - 30px));z-index:11;width:420px;height:440px;display:grid;place-items:center;"
+          class="cube-stage">
+          <div
+            style="position:absolute;left:50%;top:50%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,#FF00FF,rgba(138,43,226,0.4) 45%,transparent 72%);filter:blur(34px);animation:pulseGlow 5s ease-in-out infinite;z-index:0;">
+          </div>
+          <div style="perspective:1100px;z-index:1;">
+            <div id="tpCubeWrap"
+              style="transform:rotateX(-18deg) rotateY(-15deg);transition:transform 0.25s ease-out;transform-style:preserve-3d;">
+              <div id="tpCubeInner"
+                style="position:relative;width:230px;height:230px;transform-style:preserve-3d;animation:spin3d 20s linear infinite;">
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.55);background:linear-gradient(135deg,rgba(147,112,219,0.4),rgba(255,0,255,0.16));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(138,43,226,0.55),0 0 30px rgba(255,0,255,0.25);transform:translateZ(115px);">
+                </div>
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.45);background:linear-gradient(135deg,rgba(147,112,219,0.32),rgba(255,0,255,0.12));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(138,43,226,0.5);transform:rotateY(180deg) translateZ(115px);">
+                </div>
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.6);background:linear-gradient(135deg,rgba(0,255,255,0.18),rgba(147,112,219,0.34));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(138,43,226,0.5);transform:rotateY(90deg) translateZ(115px);">
+                </div>
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.6);background:linear-gradient(135deg,rgba(255,0,255,0.2),rgba(147,112,219,0.3));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(138,43,226,0.5);transform:rotateY(-90deg) translateZ(115px);">
+                </div>
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.7);background:linear-gradient(135deg,rgba(255,255,255,0.22),rgba(147,112,219,0.3));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(255,0,255,0.45);transform:rotateX(90deg) translateZ(115px);">
+                </div>
+                <div
+                  style="position:absolute;width:230px;height:230px;border:1.5px solid rgba(0,255,255,0.4);background:linear-gradient(135deg,rgba(147,112,219,0.3),rgba(138,43,226,0.2));backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);box-shadow:inset 0 0 70px rgba(138,43,226,0.5);transform:rotateX(-90deg) translateZ(115px);">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- overlapping glass plates bottom-left -->
+        <div
+          style="position:absolute;bottom:8%;left:max(40px,calc((100% - 1200px)/2 + 4px));z-index:11;width:280px;height:230px;animation:floaty 7s ease-in-out infinite;">
+          <div
+            style="position:absolute;bottom:0;right:0;width:200px;height:200px;border-radius:24px;background:linear-gradient(135deg,rgba(147,112,219,0.5),rgba(255,0,255,0.2));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.25);box-shadow:0 20px 50px rgba(138,43,226,0.35);transform:rotate(-6deg);">
+          </div>
+          <div
+            style="position:absolute;top:0;left:0;width:200px;height:200px;border-radius:24px;background:linear-gradient(135deg,rgba(255,255,255,0.18),rgba(147,112,219,0.08));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.4);box-shadow:0 20px 50px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.5);">
+          </div>
+        </div>
+
+        <!-- scroll hint -->
+        <div
+          style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:12;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:0.28em;color:rgba(255,255,255,0.45);">
+          SCROLL ↓</div>
+      </header>
+
+      <!-- ===== CONTENT ===== -->
+      <main style="position:relative;z-index:10;">
+
+        <!-- EQUIPE -->
+        <section id="equipe" style="max-width:1200px;margin:0 auto;padding:40px 24px 50px;scroll-margin-top:96px;">
+          <div
+            style="border-radius:28px;padding:54px 48px;background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 60px rgba(138,43,226,0.18),inset 0 1px 0 rgba(255,255,255,0.14);">
+            <div
+              style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.3em;color:#00FFFF;margin-bottom:14px;">
+              QUEM SOMOS / THE COLLECTIVE</div>
+            <h2
+              style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(32px,4vw,48px);line-height:1.05;letter-spacing:-0.02em;margin:0;max-width:720px;">
+              Um coletivo, várias especialidades</h2>
+            <p style="margin:18px 0 40px;font-size:17px;line-height:1.65;color:rgba(255,255,255,0.7);max-width:680px;">
+              Somos uma equipe enxuta e multidisciplinar. Em vez de cargos isolados, operamos como um coletivo onde
+              engenharia, design e estratégia se sobrepõem em cada entrega.</p>
+
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+              <!-- card template repeated -->
+              <div
+                style="border-radius:20px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 18px 44px rgba(255,0,255,0.28);border-color:rgba(255,0,255,0.5);">
+                <image-slot id="team1" style="width:100%;height:170px;display:block;margin-bottom:16px" shape="rounded"
+                  radius="14" placeholder="Foto / retrato"></image-slot>
+                <div
+                  style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#00FFFF;margin-bottom:6px;">
+                  ENGENHARIA</div>
+                <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:19px;margin:0 0 8px;">Engenharia &
+                  Arquitetura</h3>
+                <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.62);">Sistemas
+                  distribuídos, performance e código sustentável. Do protótipo à escala de produção.</p>
+              </div>
+              <div
+                style="border-radius:20px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 18px 44px rgba(255,0,255,0.28);border-color:rgba(255,0,255,0.5);">
+                <image-slot id="team2" style="width:100%;height:170px;display:block;margin-bottom:16px" shape="rounded"
+                  radius="14" placeholder="Foto / retrato"></image-slot>
+                <div
+                  style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#00FFFF;margin-bottom:6px;">
+                  DESIGN</div>
+                <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:19px;margin:0 0 8px;">Design &
+                  Experiência</h3>
+                <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.62);">Interfaces que unem
+                  estética e clareza. Design systems, motion e protótipos de alta fidelidade.</p>
+              </div>
+              <div
+                style="border-radius:20px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 18px 44px rgba(255,0,255,0.28);border-color:rgba(255,0,255,0.5);">
+                <image-slot id="team3" style="width:100%;height:170px;display:block;margin-bottom:16px" shape="rounded"
+                  radius="14" placeholder="Foto / retrato"></image-slot>
+                <div
+                  style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#00FFFF;margin-bottom:6px;">
+                  PRODUTO</div>
+                <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:19px;margin:0 0 8px;">Produto &
+                  Estratégia</h3>
+                <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.62);">Descoberta, roadmap
+                  e métricas. Traduzimos objetivos de negócio em produtos que entregam valor.</p>
+              </div>
+              <div
+                style="border-radius:20px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 18px 44px rgba(255,0,255,0.28);border-color:rgba(255,0,255,0.5);">
+                <image-slot id="team4" style="width:100%;height:170px;display:block;margin-bottom:16px" shape="rounded"
+                  radius="14" placeholder="Foto / retrato"></image-slot>
+                <div
+                  style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#00FFFF;margin-bottom:6px;">
+                  INFRA</div>
+                <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:19px;margin:0 0 8px;">Infra & DevOps
+                </h3>
+                <p style="margin:0;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.62);">Cloud, CI/CD e
+                  observabilidade. Infraestrutura resiliente para entregas contínuas e seguras.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROJETOS -->
+        <section id="projetos" style="max-width:1200px;margin:0 auto;padding:30px 24px 50px;scroll-margin-top:96px;">
+          <div
+            style="border-radius:28px;padding:54px 48px;background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 60px rgba(138,43,226,0.18),inset 0 1px 0 rgba(255,255,255,0.14);">
+            <div
+              style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:40px;">
+              <div>
+                <div
+                  style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.3em;color:#00FFFF;margin-bottom:14px;">
+                  PROJETOS DESENVOLVIDOS / SELECTED WORK</div>
+                <h2
+                  style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(32px,4vw,48px);line-height:1.05;letter-spacing:-0.02em;margin:0;">
+                  Trabalhos selecionados</h2>
+              </div>
+              <span style="font-family:'IBM Plex Mono';font-size:12px;color:rgba(255,255,255,0.5);">04 projetos</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;">
+              <div
+                style="border-radius:22px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 22px 54px rgba(138,43,226,0.35);border-color:rgba(0,255,255,0.5);">
+                <image-slot id="proj1" style="width:100%;height:230px;display:block" shape="rect"
+                  placeholder="Thumbnail do projeto"></image-slot>
+                <div style="padding:24px 26px;">
+                  <div
+                    style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#FF66FF;margin-bottom:10px;">
+                    WEB3 · PROTOCOL</div>
+                  <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:23px;margin:0 0 10px;">Protocolo DeFi
+                    descentralizado</h3>
+                  <p style="margin:0 0 16px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.66);">Plataforma
+                    de trading on-chain com liquidez automatizada, dashboards em tempo real e carteira integrada.</p>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">Solidity</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">React</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">The
+                      Graph</span>
+                  </div>
+                  <a href="#projetos" style="text-decoration:none;color:#00FFFF;font-size:14px;font-weight:600;"
+                    style-hover="color:#fff;">Ver caso →</a>
+                </div>
+              </div>
+              <div
+                style="border-radius:22px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 22px 54px rgba(138,43,226,0.35);border-color:rgba(0,255,255,0.5);">
+                <image-slot id="proj2" style="width:100%;height:230px;display:block" shape="rect"
+                  placeholder="Thumbnail do projeto"></image-slot>
+                <div style="padding:24px 26px;">
+                  <div
+                    style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#FF66FF;margin-bottom:10px;">
+                    DATA · SAAS</div>
+                  <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:23px;margin:0 0 10px;">Painel de
+                    analytics em tempo real</h3>
+                  <p style="margin:0 0 16px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.66);">Streaming de
+                    eventos com visualizações interativas, alertas e relatórios automatizados para times de produto.</p>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">TypeScript</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">WebSocket</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">D3</span>
+                  </div>
+                  <a href="#projetos" style="text-decoration:none;color:#00FFFF;font-size:14px;font-weight:600;"
+                    style-hover="color:#fff;">Ver caso →</a>
+                </div>
+              </div>
+              <div
+                style="border-radius:22px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 22px 54px rgba(138,43,226,0.35);border-color:rgba(0,255,255,0.5);">
+                <image-slot id="proj3" style="width:100%;height:230px;display:block" shape="rect"
+                  placeholder="Thumbnail do projeto"></image-slot>
+                <div style="padding:24px 26px;">
+                  <div
+                    style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#FF66FF;margin-bottom:10px;">
+                    MOBILE · APP</div>
+                  <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:23px;margin:0 0 10px;">App de
+                    mobilidade urbana</h3>
+                  <p style="margin:0 0 16px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.66);">Roteamento
+                    inteligente, pagamentos integrados e experiência fluida para milhões de viagens por mês.</p>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">React
+                      Native</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">Node.js</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">Maps</span>
+                  </div>
+                  <a href="#projetos" style="text-decoration:none;color:#00FFFF;font-size:14px;font-weight:600;"
+                    style-hover="color:#fff;">Ver caso →</a>
+                </div>
+              </div>
+              <div
+                style="border-radius:22px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-8px);box-shadow:0 22px 54px rgba(138,43,226,0.35);border-color:rgba(0,255,255,0.5);">
+                <image-slot id="proj4" style="width:100%;height:230px;display:block" shape="rect"
+                  placeholder="Thumbnail do projeto"></image-slot>
+                <div style="padding:24px 26px;">
+                  <div
+                    style="font-family:'IBM Plex Mono';font-size:10px;letter-spacing:0.2em;color:#FF66FF;margin-bottom:10px;">
+                    COMMERCE · B2B</div>
+                  <h3 style="font-family:'Space Grotesk';font-weight:600;font-size:23px;margin:0 0 10px;">Marketplace
+                    B2B</h3>
+                  <p style="margin:0 0 16px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.66);">Catálogo
+                    multi-fornecedor, cotações e gestão de pedidos com integrações de ERP e logística.</p>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">Next.js</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">GraphQL</span>
+                    <span
+                      style="font-size:11px;padding:5px 10px;border-radius:8px;background:rgba(138,43,226,0.18);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);">PostgreSQL</span>
+                  </div>
+                  <a href="#projetos" style="text-decoration:none;color:#00FFFF;font-size:14px;font-weight:600;"
+                    style-hover="color:#fff;">Ver caso →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TECH STACK -->
+        <section id="stack" style="max-width:1200px;margin:0 auto;padding:30px 24px 50px;scroll-margin-top:96px;">
+          <div
+            style="border-radius:28px;padding:54px 48px;background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 60px rgba(138,43,226,0.18),inset 0 1px 0 rgba(255,255,255,0.14);">
+            <div
+              style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.3em;color:#00FFFF;margin-bottom:14px;">
+              FERRAMENTAS / TECH STACK</div>
+            <h2
+              style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(32px,4vw,48px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 14px;">
+              Stack moderno, escolhido a dedo</h2>
+            <p style="margin:0 0 40px;font-size:17px;line-height:1.65;color:rgba(255,255,255,0.7);max-width:680px;">
+              Tecnologias maduras e de ponta que priorizam segurança de tipo, performance e velocidade de entrega.</p>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;">
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">⚛️</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">React</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🟦</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">TypeScript</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🎨</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">Tailwind CSS</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">⚡</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">Vite</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🟩</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">Node.js</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🔺</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">GraphQL</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🐘</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">PostgreSQL</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">☁️</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">AWS</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🐳</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">Docker</span></div>
+              <div
+                style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 14px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;"
+                style-hover="transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,255,255,0.25);border-color:rgba(0,255,255,0.5);">
+                <span style="font-size:26px;">🟣</span><span
+                  style="font-family:'Space Grotesk';font-weight:600;font-size:14px;">Design System</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TRAJETORIA / TIMELINE -->
+        <section id="trajetoria" style="max-width:1200px;margin:0 auto;padding:30px 24px 50px;scroll-margin-top:96px;">
+          <div
+            style="border-radius:28px;padding:54px 48px;background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 60px rgba(138,43,226,0.18),inset 0 1px 0 rgba(255,255,255,0.14);">
+            <div
+              style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.3em;color:#00FFFF;margin-bottom:14px;">
+              LINHA DO TEMPO / OUR JOURNEY</div>
+            <h2
+              style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(32px,4vw,48px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 8px;">
+              Da origem aos marcos atuais</h2>
+            <p style="margin:0 0 40px;font-size:15px;color:rgba(255,255,255,0.55);">Clique em um marco para ver os
+              detalhes.</p>
+
+            <div style="position:relative;padding-left:34px;">
+              <div
+                style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,#00FFFF,#8A2BE2,#FF00FF);">
+              </div>
+              <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="4">
+                <div onClick="{{ m.onSelect }}"
+                  style="position:relative;cursor:pointer;margin-bottom:18px;padding:20px 24px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease,background .3s ease;"
+                  style-hover="transform:translateX(6px);border-color:rgba(0,255,255,0.5);background:rgba(255,255,255,0.07);">
+                  <div
+                    style="position:absolute;left:-34px;top:24px;width:16px;height:16px;border-radius:50%;background:#FF00FF;box-shadow:0 0 16px rgba(255,0,255,0.9);border:3px solid #000;">
+                  </div>
+                  <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;">
+                    <span style="font-family:'Space Grotesk';font-weight:700;font-size:24px;color:#00FFFF;">{{ m.year
+                      }}</span>
+                    <span style="font-family:'Space Grotesk';font-weight:600;font-size:19px;">{{ m.title }}</span>
+                  </div>
+                  <p style="margin:8px 0 0;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.66);">{{ m.desc }}
+                  </p>
+                  <sc-if value="{{ m.isActive }}" hint-placeholder-val="{{ false }}">
+                    <div
+                      style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);font-size:14px;line-height:1.65;color:rgba(255,255,255,0.82);">
+                      {{ m.detail }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER / CONTATO -->
+        <footer id="contato" style="max-width:1200px;margin:0 auto;padding:30px 24px 70px;scroll-margin-top:96px;">
+          <div
+            style="border-radius:28px;padding:64px 48px;background:linear-gradient(135deg,rgba(138,43,226,0.16),rgba(255,0,255,0.06));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,0.14);box-shadow:0 20px 60px rgba(138,43,226,0.28),inset 0 1px 0 rgba(255,255,255,0.16);text-align:center;">
+            <div
+              style="font-family:'IBM Plex Mono';font-size:12px;letter-spacing:0.3em;color:#00FFFF;margin-bottom:18px;">
+              VAMOS TRABALHAR JUNTOS</div>
+            <h2
+              style="font-family:'Space Grotesk';font-weight:700;font-size:clamp(34px,5vw,60px);line-height:1.02;letter-spacing:-0.02em;margin:0 auto;max-width:760px;">
+              Vamos construir algo extraordinário</h2>
+            <p
+              style="margin:22px auto 34px;font-size:18px;line-height:1.6;color:rgba(255,255,255,0.74);max-width:520px;">
+              Tem um produto em mente? Conte o desafio e respondemos em até um dia útil.</p>
+            <a href="mailto:contato@equipetech.dev"
+              style="display:inline-block;text-decoration:none;color:#fff;font-weight:600;font-size:16px;padding:16px 34px;border-radius:14px;background:linear-gradient(135deg,rgba(138,43,226,0.95),rgba(255,0,255,0.8));border:1px solid rgba(255,255,255,0.25);box-shadow:0 0 32px rgba(255,0,255,0.5);"
+              style-hover="box-shadow:0 0 48px rgba(255,0,255,0.85);transform:translateY(-2px);">contato@equipetech.dev</a>
+
+            <div style="display:flex;justify-content:center;gap:28px;margin-top:48px;flex-wrap:wrap;">
+              <a href="#contato"
+                style="text-decoration:none;color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;"
+                style-hover="color:#00FFFF;">LinkedIn</a>
+              <a href="#contato"
+                style="text-decoration:none;color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;"
+                style-hover="color:#00FFFF;">GitHub</a>
+              <a href="#contato"
+                style="text-decoration:none;color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;"
+                style-hover="color:#00FFFF;">Dribbble</a>
+              <a href="#contato"
+                style="text-decoration:none;color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;"
+                style-hover="color:#00FFFF;">X / Twitter</a>
+            </div>
+            <div
+              style="margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12.5px;color:rgba(255,255,255,0.4);">
+              <span style="font-family:'IBM Plex Mono';">◈ EQUIPE TECH</span>
+              <span>© 2026 · Construído com React · Tailwind · Vite · TypeScript</span>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </x-dc>
+  <script type="text/x-dc" data-dc-script
+    data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;motionEnabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Interatividade&quot;},&quot;cubeFollow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Interatividade&quot;},&quot;waveDensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:12,&quot;min&quot;:12,&quot;max&quot;:110,&quot;step&quot;:2,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Interatividade&quot;}}">
+class Component extends DCLogic {
+  state = { active: 2 };
+
+  componentDidMount() {
+    this.mouse = { x: 0.62, y: 0.32, tx: 0.62, ty: 0.32 };
+    this.waveRef = document.getElementById('tpWave');
+    this.cubeWrap = document.getElementById('tpCubeWrap');
+    this.cubeInner = document.getElementById('tpCubeInner');
+    this._onMove = (e) => {
+      this.mouse.tx = e.clientX / window.innerWidth;
+      this.mouse.ty = e.clientY / window.innerHeight;
+      const follow = this.props.cubeFollow !== false;
+      if (this.cubeWrap) {
+        if (follow) {
+          const rx = -18 + (this.mouse.ty - 0.5) * -26;
+          const ry = -15 + (this.mouse.tx - 0.5) * 46;
+          this.cubeWrap.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+        } else {
+          this.cubeWrap.style.transform = 'rotateX(-18deg) rotateY(-15deg)';
+        }
+      }
+    };
+    window.addEventListener('mousemove', this._onMove);
+    this.initWave();
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    window.removeEventListener('mousemove', this._onMove);
+    window.removeEventListener('resize', this._resize);
+  }
+
+  initWave() {
+    const c = this.waveRef;
+    if (!c) return;
+    const ctx = c.getContext('2d', { alpha: true, desynchronized: true });
+    let W = 0, H = 0, dpr = 1;
+    // gradients depend only on line index + width — cache and rebuild on resize/density change
+    this._grads = null; this._gradN = 0;
+    const buildGrads = (N) => {
+      const arr = [];
+      for (let i = 0; i < N; i++) {
+        const depth = i / N;
+        const hue = 266 + depth * 50;
+        const g = ctx.createLinearGradient(0, 0, W, 0);
+        g.addColorStop(0, 'hsla(' + (hue + 4) + ',96%,64%,0.9)');
+        g.addColorStop(0.5, 'hsla(' + (hue + 24) + ',99%,68%,1)');
+        g.addColorStop(1, 'hsla(190,99%,64%,0.6)');
+        arr.push(g);
+      }
+      this._grads = arr; this._gradN = N;
+    };
+    this._resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = c.clientWidth; H = c.clientHeight;
+      c.width = Math.max(1, Math.round(W * dpr)); c.height = Math.max(1, Math.round(H * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      this._grads = null; // force gradient rebuild for new width
+    };
+    this._resize();
+    window.addEventListener('resize', this._resize, { passive: true });
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let t = 0, last = 0, lastN = -1;
+    const bump = (x, cx, w) => { const d = (x - cx) / (W * w); return Math.exp(-d * d); };
+
+    const draw = (now) => {
+      this._raf = requestAnimationFrame(draw);
+      // throttle to ~30fps — plenty smooth, half the work
+      if (now - last < 32) return;
+      last = now;
+
+      const motion = this.props.motionEnabled !== false && !reduceMotion;
+      if (this.cubeInner) this.cubeInner.style.animationPlayState = motion ? 'running' : 'paused';
+
+      // skip all canvas work while the hero (and wave) is scrolled out of view
+      if (window.scrollY > H * 0.95) return;
+
+      const N = Math.max(12, Math.min(120, Math.round(this.props.waveDensity || 24)));
+      if (this._grads === null || this._gradN !== N) buildGrads(N);
+
+      this.mouse.x += (this.mouse.tx - this.mouse.x) * 0.06;
+      this.mouse.y += (this.mouse.ty - this.mouse.y) * 0.06;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineWidth = 1.35;
+
+      const cx1 = W * (0.46 + (this.mouse.x - 0.5) * 0.34) + Math.sin(t * 0.6) * W * 0.07;
+      const cx2 = W * (0.74 + (this.mouse.x - 0.5) * 0.18);
+      const amp = H * 0.34 * (0.9 + (1 - this.mouse.y) * 0.38);
+      const topY = H * 0.32;
+      const gap = (H * 0.48) / N;
+      const step = W < 700 ? 16 : 11;
+
+      for (let i = 0; i < N; i++) {
+        const yb = topY + i * gap;
+        const depth = i / N;
+        ctx.strokeStyle = this._grads[i];
+        ctx.globalAlpha = 0.34 + depth * 0.46;
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += step) {
+          const ridge = bump(x, cx1, 0.16) * amp + bump(x, cx2, 0.26) * amp * 0.5;
+          const flow = Math.sin(x * 0.011 + t * 1.25 + i * 0.24) * (3 + ridge * 0.05 * depth);
+          const y = yb - ridge * (0.45 + 0.55 * depth) + flow;
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+
+      if (motion) t += 0.006;
+    };
+    this._raf = requestAnimationFrame(draw);
+  }
+
+  renderVals() {
+    const data = [
+      { year: '2019', title: 'A origem', desc: 'Três amigos engenheiros começam a prototipar produtos nos fins de semana.', detail: 'Um repositório compartilhado, um Figma e muita vontade. Os primeiros experimentos definiram a cultura de qualidade e velocidade que carregamos até hoje.' },
+      { year: '2021', title: 'Primeiros clientes', desc: 'O coletivo se formaliza e entrega seus primeiros produtos para clientes reais.', detail: 'Migramos de freelas pontuais para parcerias de longo prazo. Estruturamos o nosso primeiro design system interno e o processo de descoberta de produto.' },
+      { year: '2023', title: 'Escala', desc: 'Projetos com milhões de usuários e times multidisciplinares dedicados.', detail: 'Investimos pesado em infraestrutura, observabilidade e automação. As entregas passaram a ser contínuas, com qualidade de produção desde o primeiro dia.' },
+      { year: '2026', title: 'Hoje', desc: 'Um estúdio de tecnologia de elite, do conceito ao deploy.', detail: 'Operamos como um único organismo: produto, design e engenharia em sincronia. Buscamos parceiros que querem construir algo extraordinário.' }
+    ];
+    const milestones = data.map((m, i) => ({
+      year: m.year, title: m.title, desc: m.desc, detail: m.detail,
+      isActive: i === this.state.active,
+      onSelect: () => this.setState({ active: this.state.active === i ? -1 : i })
+    }));
+    return { milestones };
+  }
+}
+</script>
+</body>
+
+</html>

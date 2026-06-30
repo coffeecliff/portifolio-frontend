@@ -1,0 +1,17 @@
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.cyan {
+  color: var(--color-cyan);
+}
+
+.magenta {
+  color: var(--color-magenta-soft);
+  letter-spacing: 0.2em;
+  font-size: 10px;
+}

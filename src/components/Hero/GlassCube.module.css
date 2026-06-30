@@ -1,0 +1,96 @@
+.stage {
+  width: 420px;
+  height: 440px;
+  display: grid;
+  place-items: center;
+}
+
+.glow {
+  position: absolute;
+  left: 0.1%;
+  top: 10%;
+  width: 540px;
+  height: 540px;
+  border-radius: 100%;
+  background: radial-gradient(
+    circle,
+    var(--color-magenta),
+    rgba(138, 43, 226, 0.4) 45%,
+    transparent 72%
+  );
+  filter: blur(34px);
+  animation: pulseGlow 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+.perspective {
+  perspective: 1100px;
+  z-index: 1;
+}
+
+.wrap {
+  /* transform é 100% JS-driven — sem transition CSS para não brigar com o rAF */
+  transform: rotateX(-18deg) rotateY(0deg);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.inner {
+  position: relative;
+  /* dimensão igual à face para que o pivot de rotação fique no centro geométrico */
+  width: 330px;
+  height: 330px;
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  border: 1.5px solid rgba(0, 255, 255, 0.55);
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
+  box-shadow: inset 0 0 70px rgba(138, 43, 226, 0.5);
+}
+
+.front {
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.4), rgba(255, 0, 255, 0.16));
+  box-shadow: inset 0 0 70px rgba(138, 43, 226, 0.55), 0 0 30px rgba(255, 0, 255, 0.25);
+  transform: translateZ(165px);
+}
+
+.back {
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.32), rgba(255, 0, 255, 0.12));
+  transform: rotateY(180deg) translateZ(165px);
+}
+
+.right {
+  border-color: rgba(0, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.18), rgba(147, 112, 219, 0.34));
+  transform: rotateY(90deg) translateZ(165px);
+}
+
+.left {
+  border-color: rgba(0, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(147, 112, 219, 0.3));
+  transform: rotateY(-90deg) translateZ(165px);
+}
+
+.top {
+  border-color: rgba(0, 255, 255, 0.7);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(147, 112, 219, 0.3));
+  box-shadow: inset 0 0 70px rgba(255, 0, 255, 0.45);
+  transform: rotateX(90deg) translateZ(165px);
+}
+
+.bottom {
+  border-color: rgba(0, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.3), rgba(138, 43, 226, 0.2));
+  transform: rotateX(-90deg) translateZ(165px);
+}
+
+@media (max-width: 980px) {
+  .stage {
+    display: none;
+  }
+}

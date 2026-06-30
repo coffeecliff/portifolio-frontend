@@ -1,0 +1,67 @@
+/**
+ * Design tokens — fonte única de verdade para o visual do design system.
+ * Consumidos por CSS Modules (var(--*)) e pela camada JS via design-system/tokens.
+ */
+:root {
+  /* ===== Cores de marca ===== */
+  --color-bg: #000000;
+  --color-fg: #ffffff;
+
+  --color-violet: #8a2be2; /* roxo principal */
+  --color-magenta: #ff00ff; /* magenta */
+  --color-magenta-soft: #ff66ff; /* magenta claro (labels) */
+  --color-cyan: #00ffff; /* ciano (acento) */
+  --color-purple-medium: #9370db; /* roxo médio (vidro) */
+
+  /* ===== Superfícies de vidro (glassmorphism) ===== */
+  --surface-glass: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  --surface-card: rgba(255, 255, 255, 0.04);
+  --surface-card-hover: rgba(255, 255, 255, 0.07);
+
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.25);
+
+  /* ===== Texto ===== */
+  --text-strong: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.74);
+  --text-subtle: rgba(255, 255, 255, 0.66);
+  --text-faint: rgba(255, 255, 255, 0.5);
+
+  /* ===== Gradientes utilitários ===== */
+  --gradient-brand: linear-gradient(135deg, var(--color-violet), var(--color-magenta));
+  --gradient-cta: linear-gradient(
+    135deg,
+    rgba(138, 43, 226, 0.95),
+    rgba(255, 0, 255, 0.8)
+  );
+
+  /* ===== Sombras / glows ===== */
+  --glow-magenta: 0 0 30px rgba(255, 0, 255, 0.45);
+  --glow-magenta-strong: 0 0 44px rgba(255, 0, 255, 0.8);
+  --shadow-glass: 0 20px 60px rgba(138, 43, 226, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+  /* ===== Tipografia ===== */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* ===== Layout ===== */
+  --container-max: 1200px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* ===== Espaçamento ===== */
+  --space-xs: 8px;
+  --space-sm: 14px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 54px;
+}

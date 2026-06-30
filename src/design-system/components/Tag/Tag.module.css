@@ -1,0 +1,9 @@
+.tag {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(138, 43, 226, 0.18);
+  border: 1px solid var(--border-glass);
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}

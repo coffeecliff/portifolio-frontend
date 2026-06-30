@@ -1,0 +1,68 @@
+.hero {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  min-height: 760px;
+  overflow: hidden;
+}
+
+.titleBlock {
+  position: absolute;
+  top: 14%;
+  left: max(40px, calc((100% - 1200px) / 2 + 4px));
+  max-width: 560px;
+  z-index: 12;
+}
+
+.eyebrow {
+  margin-bottom: 22px;
+  letter-spacing: 0.34em;
+  text-shadow: 0 0 14px rgba(0, 255, 255, 0.6);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(54px, 7vw, 104px);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text-strong);
+  text-shadow: 0 4px 60px rgba(138, 43, 226, 0.45);
+}
+
+.lead {
+  margin: 26px 0 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 440px;
+}
+
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 34px;
+  flex-wrap: wrap;
+}
+
+.cube {
+  position: absolute;
+  top: 13%;
+  right: max(20px, calc((100% - 1200px) / 2 - 30px));
+  z-index: 11;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.45);
+}
+

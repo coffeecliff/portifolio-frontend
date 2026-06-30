@@ -1,0 +1,25 @@
+.slot {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(
+    135deg,
+    rgba(147, 112, 219, 0.22),
+    rgba(255, 0, 255, 0.08)
+  );
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
