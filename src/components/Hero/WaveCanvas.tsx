@@ -101,7 +101,7 @@ export function WaveCanvas({
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
       // throttle ~30fps
-      if (now - last < 10) return;
+      if (now - last < 8) return;
       last = now;
 
       const motion = motionRef.current && !reduceMotion;
