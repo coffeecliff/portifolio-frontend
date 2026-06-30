@@ -61,7 +61,7 @@ export function WaveCanvas({
       const arr: CanvasGradient[] = [];
       for (let i = 0; i < n; i++) {
         const depth = i / n;
-        const hue = 266 + depth * 50;
+        const hue = 166 + depth * 150;
         const g = ctx.createLinearGradient(0, 0, W, 0);
         g.addColorStop(0, `hsla(${hue + 4},96%,64%,0.9)`);
         g.addColorStop(0.5, `hsla(${hue + 24},99%,68%,1)`);
@@ -120,7 +120,7 @@ export function WaveCanvas({
       ctx.globalCompositeOperation = 'lighter';
       ctx.lineWidth = 1.35;
 
-      const cx1 = W * (0.46 + (mouse.x - 0.5) * 0.3) + Math.sin(t * 0.6) * W * 0.07;
+      const cx1 = W * (0.46 + (mouse.x - 0.5) * 0.01) + Math.sin(t * 0.6) * W * 0.07;
       const cx2 = W * (0.74 + (mouse.x - 0.5) * 0.1);
       const amp = H * 0.24 * (0.9 + (1 - mouse.y) * 0.38);
       

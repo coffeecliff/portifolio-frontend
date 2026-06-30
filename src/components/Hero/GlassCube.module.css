@@ -1,13 +1,13 @@
 .stage {
-  width: 420px;
-  height: 440px;
+  width: 560px;
+  height: 470px;
   display: grid;
   place-items: center;
 }
 
 .glow {
   position: absolute;
-  left: 0.1%;
+  right: 0.1%;
   top: 10%;
   width: 540px;
   height: 540px;
@@ -18,7 +18,7 @@
     rgba(138, 43, 226, 0.4) 45%,
     transparent 72%
   );
-  filter: blur(34px);
+  filter: blur(134px);
   animation: pulseGlow 5s ease-in-out infinite;
   z-index: 0;
 }
@@ -48,9 +48,32 @@
   width: 330px;
   height: 330px;
   border: 1.5px solid rgba(0, 255, 255, 0.55);
+  border-radius: 24px; /* <-- ADICIONADO: Pontas arredondadas */
   backdrop-filter: blur(2.5px);
   -webkit-backdrop-filter: blur(2.5px);
   box-shadow: inset 0 0 70px rgba(138, 43, 226, 0.5);
+  overflow: hidden; /* Garante que o reflexo não vaze as bordas redondas */
+}
+
+/* <-- ADICIONADO: Efeito de reflexo de luz branca em todas as faces */
+.face::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 440%;
+  height: 200%;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0.7) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 60%
+  );
+  transform: translate(-20%, -20%);
+  pointer-events: none;
 }
 
 .front {
@@ -76,10 +99,11 @@
   transform: rotateY(-90deg) translateZ(165px);
 }
 
+/* Opcional: Deixar a luz do topo mais intensa para simular luz vindo de cima */
 .top {
   border-color: rgba(0, 255, 255, 0.7);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(147, 112, 219, 0.3));
-  box-shadow: inset 0 0 70px rgba(255, 0, 255, 0.45);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(147, 112, 219, 0.3));
+  box-shadow: inset 0 0 70px rgba(255, 0, 255, 0.45), inset 0 0 20px rgba(255, 255, 255, 0.5);
   transform: rotateX(90deg) translateZ(165px);
 }
 
