@@ -3,7 +3,6 @@ import { Hero } from './components/Hero/Hero';
 import { WaveCanvas } from './components/Hero/WaveCanvas';
 import { Team } from './sections/Team/Team';
 import { Projects } from './sections/Projects/Projects';
-import { TechStack } from './sections/TechStack/TechStack';
 import { Timeline } from './sections/Timeline/Timeline';
 import { Footer } from './sections/Footer/Footer';
 import styles from './App.module.css';
@@ -36,7 +35,6 @@ export default function App() {
       <main className={styles.main}>
         <Team />
         <Projects />
-        <TechStack />
         <Timeline />
         <Footer />
       </main>

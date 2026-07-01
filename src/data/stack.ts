@@ -1,17 +1,23 @@
+import { IconType } from 'react-icons';
+import { 
+  SiReact, 
+  SiTypescript, 
+  SiTailwindcss, 
+  SiVite, 
+  SiNodedotjs, 
+  SiMysql
+} from 'react-icons/si';
+
 export interface TechItem {
-  icon: string;
   name: string;
+  icon: IconType;
 }
 
 export const techStack: TechItem[] = [
-  { icon: '⚛️', name: 'React' },
-  { icon: '🟦', name: 'TypeScript' },
-  { icon: '🎨', name: 'Tailwind CSS' },
-  { icon: '⚡', name: 'Vite' },
-  { icon: '🟩', name: 'Node.js' },
-  { icon: '🔺', name: 'GraphQL' },
-  { icon: '🐘', name: 'PostgreSQL' },
-  { icon: '☁️', name: 'AWS' },
-  { icon: '🐳', name: 'Docker' },
-  { icon: '🟣', name: 'Design System' },
+  { name: 'React', icon: SiReact },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'Tailwind CSS', icon: SiTailwindcss },
+  { name: 'Vite', icon: SiVite },
+  { name: 'Node.js', icon: SiNodedotjs },
+  { name: 'MySQL', icon: SiMysql },
 ];

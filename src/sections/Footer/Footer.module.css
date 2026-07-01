@@ -1,76 +1,181 @@
 .section {
-  max-width: var(--container-max);
+  width: 100%;
+  background-color: #000000; /* Dark puro como na print */
+  padding: 80px 48px 40px;
+  box-sizing: border-box;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.container {
+  max-width: var(--container-max, 1440px);
   margin: 0 auto;
-  padding: 30px 24px 70px;
-  scroll-margin-top: 96px;
-}
-
-.panel {
-  padding: 64px 48px;
-  text-align: center;
-}
-
-.label {
-  margin-bottom: 18px;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(34px, 5vw, 60px);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  margin: 0 auto;
-  max-width: 760px;
-}
-
-.lead {
-  margin: 22px auto 34px;
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--text-muted);
-  max-width: 520px;
-}
-
-.cta {
-  font-size: 16px;
-  padding: 16px 34px;
-  box-shadow: 0 0 32px rgba(255, 0, 255, 0.5);
-}
-
-.social {
   display: flex;
-  justify-content: center;
-  gap: 28px;
-  margin-top: 48px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 64px;
 }
 
-.socialLink {
-  text-decoration: none;
-  color: var(--text-subtle);
-  font-size: 14px;
+/* Lado Esquerdo */
+.leftColumn {
+  flex: 1;
+  max-width: 400px;
+}
+
+.ctaLink {
+  font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 500;
-  transition: color 0.2s ease;
+  color: #ffffff;
+  text-decoration: none;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  display: inline-block;
+  transition: opacity 0.2s ease;
 }
 
-.socialLink:hover {
-  color: var(--color-cyan);
+.ctaLink:hover {
+  opacity: 0.85;
 }
 
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.ctaLink:hover .arrow {
+  transform: translateX(6px);
+}
+
+/* Grid de Colunas da Direita */
+.rightGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  justify-content: flex-end;
+  flex: 2;
+}
+
+.column {
+  min-width: 140px;
+}
+
+/* Modificador para fazer a seção de stack ocupar uma linha inteira e preencher a base */
+.columnFullWidth {
+  width: 700px;
+  margin-top: 12px;
+}
+
+.columnTitle {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #555555;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.link {
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  font-weight: 400;
+}
+
+.link:hover {
+  color: #8A2BE2;
+}
+
+/* ===== NOVA ESTILIZAÇÃO: Linha horizontal de Stacks ===== */
+.stackRow {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row; /* Alinha em linha horizontal */
+  flex-wrap: wrap;
+  gap: 24px; /* Espaçamento entre os logos na horizontal */
+  align-items: center;
+}
+
+.stackItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.stackItem:hover {
+  transform: translateY(-2px); /* Efeito sutil ao passar o mouse */
+}
+
+.stackIcon {
+  width: 26px; /* Tamanho ajustado para formato de grid linear fino */
+  height: 26px;
+  color: #ffffff;
+  fill: currentColor;
+  opacity: 0.45; /* Mantém o aspecto sutil e monocromático integrado */
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.stackItem:hover .stackIcon {
+  opacity: 0.9;
+  color: #00FFFF; /* Dá um brilho ciano opcional ao focar em cada ferramenta */
+}
+
+/* Linha Final */
 .bottom {
-  margin-top: 40px;
-  padding-top: 26px;
-  border-top: 1px solid var(--border-subtle);
+  max-width: var(--container-max, 1440px);
+  margin: 64px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid #111111;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 12.5px;
-  color: var(--text-faint);
+  font-size: 12px;
+  color: #444444;
 }
 
 .brand {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Responsividade Básica */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    gap: 48px;
+  }
+  .rightGrid {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .columnFullWidth {
+    order: 5; /* Joga a stack para o final em telas menores se necessário */
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 48px 24px 24px;
+  }
+  .rightGrid {
+    gap: 32px;
+  }
+  .column {
+    min-width: calc(50% - 16px);
+  }
+  .columnFullWidth {
+    min-width: 100%;
+  }
 }

@@ -1,38 +1,89 @@
-import { GlassPanel, SectionLabel, Button } from '@/design-system';
+import { techStack } from '@/data/stack';
 import styles from './Footer.module.css';
 
-const socialLinks = ['LinkedIn', 'GitHub', 'Dribbble', 'X / Twitter'];
-const contactEmail = 'contato@equipetech.dev';
+const socialLinks = ['WhatsApp', 'LinkedIn', 'Instagram', 'GitHub', 'Email'];
+const workLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
+const aboutLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
+const trustLinks = ['Privacidade', 'Termos', 'Acessibilidade', 'Texturas · CC BY 4.0'];
 
-/** Rodapé com CTA de contato e links sociais. */
 export function Footer() {
   return (
     <footer id="contato" className={styles.section}>
-      <GlassPanel variant="brand" className={styles.panel}>
-        <SectionLabel className={styles.label}>
-          Vamos trabalhar juntos
-        </SectionLabel>
-        <h2 className={styles.title}>Vamos construir algo extraordinário</h2>
-        <p className={styles.lead}>
-          Tem um produto em mente? Conte o desafio e respondemos em até um dia útil.
-        </p>
-        <Button href={`mailto:${contactEmail}`} className={styles.cta}>
-          {contactEmail}
-        </Button>
+      <div className={styles.container}>
 
-        <nav className={styles.social}>
-          {socialLinks.map((label) => (
-            <a key={label} href="#contato" className={styles.socialLink}>
-              {label}
-            </a>
-          ))}
-        </nav>
-
-        <div className={styles.bottom}>
-          <span className={styles.brand}>◈ EQUIPE TECH</span>
-          <span>© 2026 · Construído com React · Tailwind · Vite · TypeScript</span>
+        {/* Lado Esquerdo: Grande Chamada Visual baseada na referência */}
+        <div className={styles.leftColumn}>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.ctaLink}>
+            Entre na conversa <br /> no LinkedIn <span className={styles.arrow}>→</span>
+          </a>
         </div>
-      </GlassPanel>
+
+        {/* Lado Direito: As Colunas de Navegação */}
+        <div className={styles.rightGrid}>
+
+          {/* Coluna 1: Trabalho (Projetos) */}
+          <div className={styles.column}>
+            <span className={styles.columnTitle}>TRABALHO</span>
+            <ul className={styles.list}>
+              {workLinks.map((link) => (
+                <li key={link}><a href="#portfolio" className={styles.link}>{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 2: Sobre */}
+          <div className={styles.column}>
+            <span className={styles.columnTitle}>SOBRE</span>
+            <ul className={styles.list}>
+              {aboutLinks.map((link) => (
+                <li key={link}><a href="#sobre" className={styles.link}>{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 3: Canais Sociais */}
+          <div className={styles.column}>
+            <span className={styles.columnTitle}>CANAIS</span>
+            <ul className={styles.list}>
+              {socialLinks.map((link) => (
+                <li key={link}><a href="#contato" className={styles.link}>{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          
+
+          {/* Coluna 5: Trust (Políticas e Créditos) */}
+          <div className={styles.column}>
+            <span className={styles.columnTitle}>TRUST</span>
+            <ul className={styles.list}>
+              {trustLinks.map((link) => (
+                <li key={link}><a href="#privacidade" className={styles.link}>{link}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coluna 4: Stack Utilizada (Agora transformada em Linha Horizontal) */}
+          <div className={`${styles.column} ${styles.columnFullWidth}`}>
+            <span className={styles.columnTitle}>STACK</span>
+            <ul className={styles.stackRow}>
+              {techStack.map((tech) => (
+                <li key={tech.name} className={styles.stackItem} title={tech.name}>
+                  {tech.icon && <tech.icon className={styles.stackIcon} />}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+
+        </div>
+      </div>
+
+      {/* Identidade Final no fundo */}
+      <div className={styles.bottom}>
+        <span className={styles.brand}>◈ EQUIPE TECH</span>
+        <span>© 2026 · Todos os direitos reservados.</span>
+      </div>
     </footer>
   );
 }
