@@ -4,7 +4,7 @@ import styles from './Footer.module.css';
 const socialLinks = ['WhatsApp', 'LinkedIn', 'Instagram', 'GitHub', 'Email'];
 const workLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
 const aboutLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
-const trustLinks = ['Privacidade', 'Termos', 'Acessibilidade', 'Texturas · CC BY 4.0'];
+const trustLinks = ['Texturas · CC BY 4.0'];
 
 export function Footer() {
   return (
@@ -58,7 +58,7 @@ export function Footer() {
             <span className={styles.columnTitle}>TRUST</span>
             <ul className={styles.list}>
               {trustLinks.map((link) => (
-                <li key={link}><a href="#privacidade" className={styles.link}>{link}</a></li>
+                <li key={link}><a href="https://creativecommons.org/licenses/by/4.0/" className={styles.link}>{link}</a></li>
               ))}
             </ul>
           </div>
