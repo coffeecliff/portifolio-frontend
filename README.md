@@ -28,9 +28,8 @@ src/
 ├── sections/              # seções da página
 │   ├── Team/               # quem somos
 │   ├── Projects/           # trabalhos selecionados
-│   ├── TechStack/          # stack de tecnologias
 │   ├── Timeline/           # linha do tempo interativa
-│   └── Footer/             # contato + redes
+│   └── Footer/             # contato + redes + linha da stack
 │
 ├── data/                  # conteúdo desacoplado da UI (textos, listas)
 │   ├── navigation.ts
@@ -68,7 +67,6 @@ centralizadas em `src/App.tsx` (`settings`):
 | Opção           | Descrição                                   |
 | --------------- | ------------------------------------------- |
 | `motionEnabled` | Liga/desliga animações (respeita reduced-motion) |
-| `cubeFollow`    | Cubo 3D acompanha o mouse                    |
 | `waveDensity`   | Densidade de linhas da onda de fundo (12–120) |
 
 ## Origem
