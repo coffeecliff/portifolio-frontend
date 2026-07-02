@@ -1,42 +1,50 @@
 export interface Project {
   id: string;
-  category: string;
+  /** Segmento de mercado — reforça versatilidade (atendemos qualquer ramo). */
+  segment: string;
   title: string;
   description: string;
+  /** Entregáveis/atributos da solução (não são clientes reais). */
   tags: string[];
 }
 
+/**
+ * ⚠️ PLACEHOLDER: portfólio em construção. Os cards abaixo são exemplos
+ * ILUSTRATIVOS das soluções que entregamos por segmento — não representam
+ * clientes reais nem métricas. Substituir por cases reais quando disponíveis
+ * (respeitando a regra de nunca fabricar resultados/depoimentos).
+ */
 export const projects: Project[] = [
   {
-    id: 'proj1',
-    category: 'Web3 · Protocol',
-    title: 'Protocolo DeFi descentralizado',
+    id: 'seg-varejo',
+    segment: 'Varejo & E-commerce',
+    title: 'Loja online que vende',
     description:
-      'Plataforma de trading on-chain com liquidez automatizada, dashboards em tempo real e carteira integrada.',
-    tags: ['Solidity', 'React', 'The Graph'],
+      'Vitrine digital rápida e persuasiva, pensada para transformar cada visita em pedido.',
+    tags: ['Design sob medida', 'Responsivo', 'SEO'],
   },
   {
-    id: 'proj2',
-    category: 'Data · SaaS',
-    title: 'Painel de analytics em tempo real',
+    id: 'seg-saude',
+    segment: 'Saúde & Bem-estar',
+    title: 'Site de clínica que gera agendamentos',
     description:
-      'Streaming de eventos com visualizações interativas, alertas e relatórios automatizados para times de produto.',
-    tags: ['TypeScript', 'WebSocket', 'D3'],
+      'Presença profissional que transmite confiança e leva o paciente direto ao contato.',
+    tags: ['Conversão', 'Agendamento', 'Mobile-first'],
   },
   {
-    id: 'proj3',
-    category: 'Mobile · App',
-    title: 'App de mobilidade urbana',
+    id: 'seg-servicos',
+    segment: 'Serviços & B2B',
+    title: 'Landing page que qualifica leads',
     description:
-      'Roteamento inteligente, pagamentos integrados e experiência fluida para milhões de viagens por mês.',
-    tags: ['React Native', 'Node.js', 'Maps'],
+      'Autoridade e clareza para atrair o cliente certo e abastecer o seu time comercial.',
+    tags: ['Copy de vendas', 'Formulário', 'Performance'],
   },
   {
-    id: 'proj4',
-    category: 'Commerce · B2B',
-    title: 'Marketplace B2B',
+    id: 'seg-eventos',
+    segment: 'Eventos & Lançamentos',
+    title: 'Página de captação de inscrições',
     description:
-      'Catálogo multi-fornecedor, cotações e gestão de pedidos com integrações de ERP e logística.',
-    tags: ['Next.js', 'GraphQL', 'PostgreSQL'],
+      'Impacto visual e senso de urgência para lotar o seu evento ou lançamento.',
+    tags: ['Alto impacto', 'Contagem regressiva', 'Integrações'],
   },
 ];

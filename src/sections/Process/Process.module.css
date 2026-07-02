@@ -21,7 +21,7 @@
 .hint {
   margin: 0 0 40px;
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--text-faint);
 }
 
 .track {
@@ -35,7 +35,12 @@
   top: 6px;
   bottom: 6px;
   width: 2px;
-  background: linear-gradient(180deg, #00ffff, #8a2be2, #ff00ff);
+  background: linear-gradient(
+    180deg,
+    var(--color-cyan),
+    var(--color-violet),
+    var(--color-magenta)
+  );
 }
 
 .item {
@@ -79,10 +84,10 @@
   flex-wrap: wrap;
 }
 
-.year {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 24px;
+.step {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 20px;
   color: var(--color-cyan);
 }
 
@@ -106,5 +111,5 @@
   border-top: 1px solid var(--border-glass);
   font-size: 14px;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--text-muted);
 }

@@ -1,15 +1,18 @@
 import { Nav } from './components/Nav/Nav';
 import { Hero } from './components/Hero/Hero';
 import { WaveCanvas } from './components/Hero/WaveCanvas';
-import { Team } from './sections/Team/Team';
+import { Services } from './sections/Services/Services';
 import { Projects } from './sections/Projects/Projects';
-import { Timeline } from './sections/Timeline/Timeline';
+import { Process } from './sections/Process/Process';
+import { CallToAction } from './sections/CallToAction/CallToAction';
 import { Footer } from './sections/Footer/Footer';
+import { MotionProvider } from './motion/MotionContext';
 import styles from './App.module.css';
 
 /**
- * Configuração de interatividade — antes eram props do componente no Claude
- * Design. Centralizadas aqui para fácil ajuste (motion, cubo, densidade).
+ * Configuração de interatividade de nível de página.
+ * `motionEnabled` liga/desliga animações (respeitado também via
+ * prefers-reduced-motion no MotionProvider); `waveDensity` controla a onda.
  */
 const settings = {
   motionEnabled: true,
@@ -18,26 +21,28 @@ const settings = {
 
 export default function App() {
   return (
-    <div className={styles.root}>
-      
-      {/* Glows ambientes fixos + onda interativa atrás de tudo */}
-      <div className={styles.ambient} />
-      <WaveCanvas
-        motionEnabled={settings.motionEnabled}
-        density={settings.waveDensity}
-        yOffset="100px"
-      />
+    <MotionProvider enabled={settings.motionEnabled}>
+      <div className={styles.root}>
+        {/* Glows ambientes fixos + onda interativa atrás de tudo */}
+        <div className={styles.ambient} />
+        <WaveCanvas
+          motionEnabled={settings.motionEnabled}
+          density={settings.waveDensity}
+          yOffset="100px"
+        />
 
-      <Nav />
+        <Nav />
 
-      <Hero motionEnabled={settings.motionEnabled} />
-    
-      <main className={styles.main}>
-        <Team />
-        <Projects />
-        <Timeline />
-        <Footer />
-      </main>
-    </div>
+        <Hero motionEnabled={settings.motionEnabled} />
+
+        <main className={styles.main}>
+          <Services />
+          <Projects />
+          <Process />
+          <CallToAction />
+          <Footer />
+        </main>
+      </div>
+    </MotionProvider>
   );
 }

@@ -1,13 +1,13 @@
 .section {
   width: 100%;
-  background-color: #000000; /* Dark puro como na print */
   padding: 80px 48px 40px;
   box-sizing: border-box;
-  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .container {
-  max-width: var(--container-max, 1440px);
+  max-width: var(--container-max);
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -15,16 +15,17 @@
   gap: 64px;
 }
 
-/* Lado Esquerdo */
+/* Chamada à esquerda */
 .leftColumn {
   flex: 1;
   max-width: 400px;
 }
 
 .ctaLink {
+  font-family: var(--font-display);
   font-size: clamp(28px, 3.5vw, 42px);
-  font-weight: 500;
-  color: #ffffff;
+  font-weight: 600;
+  color: var(--text-strong);
   text-decoration: none;
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -45,7 +46,7 @@
   transform: translateX(6px);
 }
 
-/* Grid de Colunas da Direita */
+/* Colunas à direita */
 .rightGrid {
   display: flex;
   flex-wrap: wrap;
@@ -58,18 +59,18 @@
   min-width: 140px;
 }
 
-/* Modificador para fazer a seção de stack ocupar uma linha inteira e preencher a base */
 .columnFullWidth {
-  width: 700px;
+  width: 100%;
   margin-top: 12px;
 }
 
 .columnTitle {
   display: block;
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  color: #555555;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
   margin-bottom: 24px;
   text-transform: uppercase;
 }
@@ -85,25 +86,25 @@
 
 .link {
   font-size: 14px;
-  color: #ffffff;
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.15s ease;
   font-weight: 400;
 }
 
 .link:hover {
-  color: #8A2BE2;
+  color: var(--color-cyan);
 }
 
-/* ===== NOVA ESTILIZAÇÃO: Linha horizontal de Stacks ===== */
+/* Linha horizontal de stacks */
 .stackRow {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: row; /* Alinha em linha horizontal */
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 24px; /* Espaçamento entre os logos na horizontal */
+  gap: 24px;
   align-items: center;
 }
 
@@ -115,42 +116,44 @@
 }
 
 .stackItem:hover {
-  transform: translateY(-2px); /* Efeito sutil ao passar o mouse */
+  transform: translateY(-2px);
 }
 
 .stackIcon {
-  width: 26px; /* Tamanho ajustado para formato de grid linear fino */
+  width: 26px;
   height: 26px;
-  color: #ffffff;
+  color: var(--text-strong);
   fill: currentColor;
-  opacity: 0.45; /* Mantém o aspecto sutil e monocromático integrado */
+  opacity: 0.45;
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .stackItem:hover .stackIcon {
   opacity: 0.9;
-  color: #00FFFF; /* Dá um brilho ciano opcional ao focar em cada ferramenta */
+  color: var(--color-cyan);
 }
 
-/* Linha Final */
+/* Linha final */
 .bottom {
-  max-width: var(--container-max, 1440px);
+  max-width: var(--container-max);
   margin: 64px auto 0;
   padding-top: 24px;
-  border-top: 1px solid #111111;
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
   font-size: 12px;
-  color: #444444;
+  color: var(--text-faint);
 }
 
 .brand {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.05em;
+  color: var(--text-muted);
 }
 
-/* Responsividade Básica */
 @media (max-width: 1024px) {
   .container {
     flex-direction: column;
@@ -159,9 +162,6 @@
   .rightGrid {
     justify-content: flex-start;
     width: 100%;
-  }
-  .columnFullWidth {
-    order: 5; /* Joga a stack para o final em telas menores se necessário */
   }
 }
 

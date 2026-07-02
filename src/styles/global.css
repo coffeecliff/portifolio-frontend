@@ -36,34 +36,9 @@ body {
   border-radius: 8px;
 }
 
-/* ===== Keyframes compartilhados ===== */
-@keyframes spin3d {
-  0% {
-    transform: rotateX(-18deg) rotateY(0deg);
-  }
-  100% {
-    transform: rotateX(-18deg) rotateY(360deg);
-  }
-}
-
-@keyframes floaty {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-18px);
-  }
-}
-
-@keyframes pulseGlow {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(1.12);
+/* Respeita a preferência do sistema por menos movimento. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

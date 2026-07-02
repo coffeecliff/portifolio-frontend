@@ -1,71 +1,66 @@
 import { techStack } from '@/data/stack';
+import { navLinks } from '@/data/navigation';
+import { site } from '@/data/site';
 import styles from './Footer.module.css';
 
-const socialLinks = ['WhatsApp', 'LinkedIn', 'Instagram', 'GitHub', 'Email'];
-const workLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
-const aboutLinks = ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'EEEE'];
-const trustLinks = ['Texturas · CC BY 4.0'];
+const contactLinks = [
+  site.contact.whatsapp,
+  site.contact.email,
+  site.contact.instagram,
+  site.contact.linkedin,
+];
+
+const currentYear = new Date().getFullYear();
 
 export function Footer() {
   return (
-    <footer id="contato" className={styles.section}>
+    <footer className={styles.section}>
       <div className={styles.container}>
-
-        {/* Lado Esquerdo: Grande Chamada Visual baseada na referência */}
+        {/* Chamada final para o contato */}
         <div className={styles.leftColumn}>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.ctaLink}>
-            Entre na conversa <br /> no LinkedIn <span className={styles.arrow}>→</span>
+          <a href={site.contact.whatsapp.href} className={styles.ctaLink}>
+            Vamos conversar <br /> sobre o seu site{' '}
+            <span className={styles.arrow}>→</span>
           </a>
         </div>
 
-        {/* Lado Direito: As Colunas de Navegação */}
         <div className={styles.rightGrid}>
-
-          {/* Coluna 1: Trabalho (Projetos) */}
+          {/* Navegação interna */}
           <div className={styles.column}>
-            <span className={styles.columnTitle}>TRABALHO</span>
+            <span className={styles.columnTitle}>Navegação</span>
             <ul className={styles.list}>
-              {workLinks.map((link) => (
-                <li key={link}><a href="#portfolio" className={styles.link}>{link}</a></li>
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className={styles.link}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="#contato" className={styles.link}>
+                  Contato
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Canais de contato */}
+          <div className={styles.column}>
+            <span className={styles.columnTitle}>Canais</span>
+            <ul className={styles.list}>
+              {contactLinks.map((channel) => (
+                <li key={channel.href}>
+                  <a href={channel.href} className={styles.link}>
+                    {channel.short ?? channel.label}
+                  </a>
+                </li>
               ))}
             </ul>
           </div>
 
-          {/* Coluna 2: Sobre */}
-          <div className={styles.column}>
-            <span className={styles.columnTitle}>SOBRE</span>
-            <ul className={styles.list}>
-              {aboutLinks.map((link) => (
-                <li key={link}><a href="#sobre" className={styles.link}>{link}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Coluna 3: Canais Sociais */}
-          <div className={styles.column}>
-            <span className={styles.columnTitle}>CANAIS</span>
-            <ul className={styles.list}>
-              {socialLinks.map((link) => (
-                <li key={link}><a href="#contato" className={styles.link}>{link}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          
-
-          {/* Coluna 5: Trust (Políticas e Créditos) */}
-          <div className={styles.column}>
-            <span className={styles.columnTitle}>TRUST</span>
-            <ul className={styles.list}>
-              {trustLinks.map((link) => (
-                <li key={link}><a href="https://creativecommons.org/licenses/by/4.0/" className={styles.link}>{link}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Coluna 4: Stack Utilizada (Agora transformada em Linha Horizontal) */}
+          {/* Stack — prova de capacidade técnica */}
           <div className={`${styles.column} ${styles.columnFullWidth}`}>
-            <span className={styles.columnTitle}>STACK</span>
+            <span className={styles.columnTitle}>Stack</span>
             <ul className={styles.stackRow}>
               {techStack.map((tech) => (
                 <li key={tech.name} className={styles.stackItem} title={tech.name}>
@@ -74,15 +69,14 @@ export function Footer() {
               ))}
             </ul>
           </div>
-          
-
         </div>
       </div>
 
-      {/* Identidade Final no fundo */}
       <div className={styles.bottom}>
-        <span className={styles.brand}>◈ EQUIPE TECH</span>
-        <span>© 2026 · Todos os direitos reservados.</span>
+        <span className={styles.brand}>
+          {site.brandMark} {site.brandName}
+        </span>
+        <span>© {currentYear} · Todos os direitos reservados.</span>
       </div>
     </footer>
   );

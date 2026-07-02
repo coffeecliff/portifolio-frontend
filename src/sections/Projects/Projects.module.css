@@ -57,7 +57,7 @@
   padding: 24px 26px;
 }
 
-.category {
+.segment {
   margin-bottom: 10px;
 }
 
@@ -79,18 +79,23 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 18px;
 }
 
-.link {
-  text-decoration: none;
-  color: var(--color-cyan);
-  font-size: 14px;
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footerText {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.4vw, 22px);
   font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.link:hover {
   color: var(--text-strong);
 }
 

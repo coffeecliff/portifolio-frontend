@@ -1,50 +1,63 @@
-import { GlassPanel, SectionLabel, ImageSlot, Tag } from '@/design-system';
+import { GlassPanel, SectionLabel, ImageSlot, Tag, Button } from '@/design-system';
+import { Reveal } from '@/motion/Reveal';
 import { projects } from '@/data/projects';
 import styles from './Projects.module.css';
 
-/** Seção de trabalhos selecionados — grade de cards de projeto. */
+/**
+ * Showcase por segmento — demonstra versatilidade (atendemos qualquer ramo).
+ * ⚠️ Cards são exemplos ilustrativos enquanto o portfólio real está em
+ * construção; imagens usam placeholder e não há métricas/clientes fabricados.
+ */
 export function Projects() {
   return (
     <section id="projetos" className={styles.section}>
       <GlassPanel>
-        <header className={styles.head}>
-          <div>
-            <SectionLabel className={styles.label}>
-              Projetos desenvolvidos / Selected work
-            </SectionLabel>
-            <h2 className={styles.title}>Trabalhos selecionados</h2>
-          </div>
-          <span className={styles.count}>
-            {String(projects.length).padStart(2, '0')} projetos
-          </span>
-        </header>
+        <Reveal>
+          <header className={styles.head}>
+            <div>
+              <SectionLabel className={styles.label}>
+                Do varejo à saúde, de serviços a eventos
+              </SectionLabel>
+              <h2 className={styles.title}>
+                O mesmo alto padrão para qualquer segmento
+              </h2>
+            </div>
+            <span className={styles.count}>Portfólio em construção</span>
+          </header>
+        </Reveal>
 
         <div className={styles.grid}>
-          {projects.map((project) => (
-            <article key={project.id} className={styles.card}>
-              <ImageSlot
-                placeholder="Thumbnail do projeto"
-                height={230}
-                shape="rect"
-              />
-              <div className={styles.body}>
-                <SectionLabel tone="magenta" className={styles.category}>
-                  {project.category}
-                </SectionLabel>
-                <h3 className={styles.cardTitle}>{project.title}</h3>
-                <p className={styles.cardDesc}>{project.description}</p>
-                <div className={styles.tags}>
-                  {project.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
+          {projects.map((project, i) => (
+            <Reveal key={project.id} delay={i * 90}>
+              <article className={styles.card}>
+                <ImageSlot
+                  placeholder="Projeto em breve"
+                  height={230}
+                  shape="rect"
+                />
+                <div className={styles.body}>
+                  <SectionLabel tone="magenta" className={styles.segment}>
+                    {project.segment}
+                  </SectionLabel>
+                  <h3 className={styles.cardTitle}>{project.title}</h3>
+                  <p className={styles.cardDesc}>{project.description}</p>
+                  <div className={styles.tags}>
+                    {project.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
                 </div>
-                <a href="#projetos" className={styles.link}>
-                  Ver caso →
-                </a>
-              </div>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
+
+        <Reveal className={styles.footer}>
+          <p className={styles.footerText}>
+            Quer um resultado assim para o seu negócio?
+          </p>
+          <Button href="#contato">Peça seu orçamento</Button>
+        </Reveal>
       </GlassPanel>
     </section>
   );

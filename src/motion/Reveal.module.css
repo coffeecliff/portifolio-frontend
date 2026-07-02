@@ -1,0 +1,25 @@
+.reveal {
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Estados iniciais (só aplicados quando o movimento está ligado). */
+.up {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.down {
+  opacity: 0;
+  transform: translateY(-28px);
+}
+
+.none {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+  transform: none;
+}
