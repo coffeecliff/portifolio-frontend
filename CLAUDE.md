@@ -23,6 +23,42 @@ Posicionamento que todo conteúdo deve reforçar:
 - Foco em **conversão**: chamadas para ação claras, provas de capacidade
   (projetos, stack, trajetória) e um caminho evidente para o contato.
 
+## Estrutura de seções (ordem canônica — regra rígida)
+
+A página segue uma **ordem fixa de seções**, desenhada como um funil de conversão
+(AIDA: Atenção → Interesse → Desejo → Ação). Essa ordem é a **fonte da verdade
+estrutural**: toda seção nova deve ser encaixada no ponto coerente do funil, e
+**qualquer mudança de ordem ou adição/remoção de seção exige atualizar esta
+tabela** antes de implementar. A composição vive em `src/App.tsx` (dentro de
+`<main>`, após `Nav` + `Hero`).
+
+| # | Seção | Componente | Âncora | Papel na conversão |
+|---|-------|-----------|--------|--------------------|
+| 1 | Navegação | `components/Nav` | — | CTA persistente (menu flutuante de vidro) |
+| 2 | Hero | `components/Hero` | `#topo` | **Atenção**: proposta de valor + CTA principal |
+| 3 | Serviços | `sections/Services` | `#servicos` | **Interesse**: o que entregamos (benefício) |
+| 4 | Projetos | `sections/Projects` | `#projetos` | **Desejo/prova**: portfólio de trabalhos |
+| 5 | Sobre | `sections/About` | `#sobre` | **Confiança**: quem é o estúdio (posicionamento de marca VÉRTICE) |
+| 6 | Processo | `sections/Process` | `#processo` | **Reduz risco**: como trabalhamos |
+| 7 | Tecnologias | `sections/Tech` | `#tecnologias` | **Reforço**: por que o site é rápido/fluido/bonito — resultado, não jargão |
+| 8 | Depoimentos | `sections/Testimonials` | `#depoimentos` | **Prova social** (só renderiza com depoimento real; senão retorna `null`) |
+| 9 | Contato (CTA) | `sections/CallToAction` | `#contato` | **Ação**: fechar contato |
+| 10 | Rodapé | `sections/Footer` | — | Navegação + canais + marca |
+
+Regras associadas:
+
+- **Nav** (`src/data/navigation.ts`) expõe um subconjunto enxuto:
+  `Serviços · Projetos · Sobre · Processo` + botão "Fale conosco" (`#contato`).
+  Tecnologias e Depoimentos são alcançados por scroll, não pelo menu.
+- **Seção de Tecnologias é voltada ao cliente NÃO-técnico**: cada ferramenta é
+  apresentada pelo **resultado/benefício que gera no site** (campo `benefit` em
+  `src/data/stack.ts`), nunca por descrição técnica de capacidade.
+- **Depoimentos nunca contém dados fabricados**: `src/data/testimonials.ts`
+  nasce vazio e a seção só aparece quando houver depoimento real.
+- Toda seção reutiliza `GlassPanel` + `SectionLabel` + `Reveal` de
+  `@/design-system` / `@/motion`, com CSS Module co-localizado, seguindo o
+  idioma de `sections/Services` (grade de cards com borda em gradiente no hover).
+
 ## Estética e identidade visual (regra rígida — base do projeto)
 
 Esta landing page tem uma estética **fixa e inegociável** que **toda** nova
@@ -101,11 +137,16 @@ original** do Claude Design e **não** refletem o posicionamento real da dupla
 freelancer. Trate-os como provisórios e alinhe-os ao contexto acima quando for
 mexer neles:
 
-- `src/data/team.ts`, `projects.ts`, `milestones.ts` descrevem um "coletivo de
-  tecnologia de elite" fictício — substituir gradualmente pela nossa história e
-  trabalhos reais.
-- `src/sections/Footer/Footer.tsx` contém links de placeholder (`AAAA`, `BBBB`,
-  colunas TRABALHO/SOBRE) que precisam de conteúdo real.
+- `src/data/site.ts` — nome de marca (`VÉRTICE`) e canais de contato
+  (WhatsApp/e-mail/Instagram/LinkedIn) ainda são provisórios; trocar pelos dados
+  reais da dupla antes de publicar.
+- `src/data/projects.ts` — projetos de exemplo por segmento ("Portfólio em
+  construção"); substituir pelos trabalhos reais.
+- `src/data/about.ts` — copy de posicionamento genérica do estúdio; refinar com
+  a história real (sem inventar dados).
+- `src/data/testimonials.ts` — **nasce vazio de propósito** (regra anti-fake). A
+  seção `Depoimentos` só aparece quando houver depoimento real; nunca preencher
+  com depoimentos/clientes inventados.
 
 Sempre que reescrever esses dados, respeite o tom de voz e o posicionamento
 comercial definidos acima.
@@ -143,19 +184,20 @@ O código é organizado em três camadas, e as dependências devem fluir sempre
   arquivos de componente individuais.
 - `src/components/` — blocos de layout específicos desta página (`Nav`, `Hero`
   + `GlassCube` + `WaveCanvas`).
-- `src/sections/` — as seções da página, compostas em `App.tsx` (`Team`,
-  `Projects`, `Timeline`, `Footer`). Cada seção puxa sua copy/listas de
-  `src/data/` e seus primitivos de `@/design-system`, e não deve hardcodar
-  strings que pertencem a `data/`.
+- `src/sections/` — as seções da página, compostas em `App.tsx` na ordem
+  canônica (`Services`, `Projects`, `About`, `Process`, `Tech`, `Testimonials`,
+  `CallToAction`, `Footer` — ver "## Estrutura de seções" abaixo). Cada seção
+  puxa sua copy/listas de `src/data/` e seus primitivos de `@/design-system`, e
+  não deve hardcodar strings que pertencem a `data/`.
 
 Convenções a preservar:
 
 - **Separação conteúdo/apresentação**: textos e listas ficam em `src/data/*.ts`
-  (`team.ts`, `projects.ts`, `stack.ts`, `milestones.ts`, `navigation.ts`),
-  tipados por uma interface exportada. Editar copy não deve exigir tocar em JSX.
-  Obs.: `stack.ts` existe como dado e é consumido pelo `Footer` (linha de ícones
-  da stack); não há uma seção `TechStack` dedicada no momento, apesar de o link
-  `#stack` existir na navegação.
+  (`site.ts`, `services.ts`, `projects.ts`, `about.ts`, `process.ts`,
+  `stack.ts`, `testimonials.ts`, `navigation.ts`), tipados por uma interface
+  exportada. Editar copy não deve exigir tocar em JSX. Obs.: `stack.ts` é
+  consumido tanto pela seção `Tech` (âncora `#tecnologias`, ícone + benefício
+  voltado ao cliente) quanto pelo `Footer` (linha de ícones da stack).
 - **Design tokens**: `src/styles/tokens.css` é a fonte única de verdade do visual
   (CSS custom properties — cor, espaçamento, tipografia). O tema é escuro, com
   identidade em roxo/magenta/ciano e superfícies de vidro (glassmorphism).

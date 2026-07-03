@@ -3,7 +3,10 @@ import { Hero } from './components/Hero/Hero';
 import { WaveCanvas } from './components/Hero/WaveCanvas';
 import { Services } from './sections/Services/Services';
 import { Projects } from './sections/Projects/Projects';
+import { About } from './sections/About/About';
 import { Process } from './sections/Process/Process';
+import { Tech } from './sections/Tech/Tech';
+import { Testimonials } from './sections/Testimonials/Testimonials';
 import { CallToAction } from './sections/CallToAction/CallToAction';
 import { Footer } from './sections/Footer/Footer';
 import { MotionProvider } from './motion/MotionContext';
@@ -38,7 +41,10 @@ export default function App() {
         <main className={styles.main}>
           <Services />
           <Projects />
+          <About />
           <Process />
+          <Tech />
+          <Testimonials />
           <CallToAction />
           <Footer />
         </main>
