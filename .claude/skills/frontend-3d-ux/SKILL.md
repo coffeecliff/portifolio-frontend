@@ -45,6 +45,11 @@ Tema escuro, identidade roxo/magenta/ciano, superfícies de vidro
 (glassmorphism). Toda copy nova em **PT-BR**, tom profissional e voltado ao
 cliente (ver `CLAUDE.md`).
 
+Antes de hardcodar qualquer cor ou decisão estrutural, veja a regra de
+**"Manutenibilidade e personalização"** no `CLAUDE.md` — o projeto está em fase
+embrionária e precisa continuar fácil de reestruturar e de trocar paleta
+(inclusive por seção).
+
 ## Performance é inegociável (prioridade máxima)
 
 O espetáculo visual **não pode** travar em computadores antigos ou dispositivos

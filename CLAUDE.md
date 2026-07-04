@@ -59,6 +59,38 @@ Regras associadas:
   `@/design-system` / `@/motion`, com CSS Module co-localizado, seguindo o
   idioma de `sections/Services` (grade de cards com borda em gradiente no hover).
 
+## Manutenibilidade e personalização (regra rígida — fase embrionária)
+
+O projeto está em **fase embrionária**: paleta, estrutura e ordem de seções vão
+mudar **diversas vezes** até chegar num resultado satisfatório. Toda decisão de
+arquitetura deve otimizar para **facilidade de manutenção e personalização**,
+não para o resultado final "definitivo" de hoje.
+
+- **Trocar a paleta de cor tem que ser trivial.** O objetivo é ter **múltiplas
+  paletas** que podem ser acionadas em **diferentes seções do site** (não
+  necessariamente uma paleta global única) para criar um espetáculo visual de
+  variação entre seções. Isso deve ser possível ajustando **valores em um só
+  lugar** (tokens/variáveis), nunca caçando cor hardcoded espalhada por
+  componentes. Ao construir/alterar qualquer seção, pense em como a paleta dela
+  poderia ser trocada sem tocar em JSX — por exemplo, escopando os tokens de cor
+  por seção (custom properties sobrescritas no container da seção) em vez de só
+  um conjunto global fixo em `:root`. **Antes de expandir esse mecanismo de
+  múltiplas paletas por seção, alinhe a abordagem técnica com o usuário** — isso
+  ainda não está implementado.
+- **Reestruturar o site tem que ser barato.** Reordenar seções, adicionar,
+  remover ou mover uma seção para outro ponto do funil deve ser uma mudança
+  pequena e localizada (composição em `App.tsx` + atualização da tabela em
+  "Estrutura de seções" — ver acima), nunca uma refatoração espalhada por
+  múltiplos arquivos.
+- **Não otimize prematuramente para estabilidade.** Não resista a propor
+  mudanças estruturais ou de paleta por elas "já estarem prontas" — o projeto
+  aceita, e espera, várias iterações. Prefira sempre a solução mais simples de
+  manter/trocar depois a uma mais "definitiva" e rígida.
+- Isso **não relaxa** a regra de paleta fixa em "Estética e identidade visual"
+  abaixo — a paleta de marca (roxo/magenta/ciano + neutras) continua sendo a
+  base; o que muda é permitir **variações/combinações dela por seção**, sempre
+  fácil de ajustar centralmente.
+
 ## Estética e identidade visual (regra rígida — base do projeto)
 
 Esta landing page tem uma estética **fixa e inegociável** que **toda** nova
