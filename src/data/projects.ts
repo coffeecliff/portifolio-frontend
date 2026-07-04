@@ -1,3 +1,9 @@
+export interface ProjectShot {
+  id: string;
+  /** Tipo de tela retratada — placeholder até a prévia real existir. */
+  label: string;
+}
+
 export interface Project {
   id: string;
   /** Segmento de mercado — reforça versatilidade (atendemos qualquer ramo). */
@@ -6,6 +12,12 @@ export interface Project {
   description: string;
   /** Entregáveis/atributos da solução (não são clientes reais). */
   tags: string[];
+  /**
+   * Telas exibidas no carrossel horizontal. Enquanto o portfólio real não
+   * existe, servem de placeholder: cada `label` nomeia o TIPO de tela que a
+   * prévia mostraria (sem métricas nem clientes fabricados).
+   */
+  shots: ProjectShot[];
 }
 
 /**
@@ -22,6 +34,12 @@ export const projects: Project[] = [
     description:
       'Vitrine digital rápida e persuasiva, pensada para transformar cada visita em pedido.',
     tags: ['Design sob medida', 'Responsivo', 'SEO'],
+    shots: [
+      { id: 'varejo-home', label: 'Home da loja' },
+      { id: 'varejo-produto', label: 'Página de produto' },
+      { id: 'varejo-colecao', label: 'Vitrine de coleção' },
+      { id: 'varejo-checkout', label: 'Checkout' },
+    ],
   },
   {
     id: 'seg-saude',
@@ -30,6 +48,12 @@ export const projects: Project[] = [
     description:
       'Presença profissional que transmite confiança e leva o paciente direto ao contato.',
     tags: ['Conversão', 'Agendamento', 'Mobile-first'],
+    shots: [
+      { id: 'saude-home', label: 'Página inicial' },
+      { id: 'saude-servicos', label: 'Especialidades' },
+      { id: 'saude-equipe', label: 'Equipe' },
+      { id: 'saude-agenda', label: 'Agendamento' },
+    ],
   },
   {
     id: 'seg-servicos',
@@ -38,6 +62,12 @@ export const projects: Project[] = [
     description:
       'Autoridade e clareza para atrair o cliente certo e abastecer o seu time comercial.',
     tags: ['Copy de vendas', 'Formulário', 'Performance'],
+    shots: [
+      { id: 'servicos-hero', label: 'Proposta de valor' },
+      { id: 'servicos-solucao', label: 'Solução' },
+      { id: 'servicos-prova', label: 'Prova social' },
+      { id: 'servicos-form', label: 'Formulário de contato' },
+    ],
   },
   {
     id: 'seg-eventos',
@@ -46,5 +76,11 @@ export const projects: Project[] = [
     description:
       'Impacto visual e senso de urgência para lotar o seu evento ou lançamento.',
     tags: ['Alto impacto', 'Contagem regressiva', 'Integrações'],
+    shots: [
+      { id: 'eventos-hero', label: 'Abertura do evento' },
+      { id: 'eventos-programacao', label: 'Programação' },
+      { id: 'eventos-palestrantes', label: 'Palestrantes' },
+      { id: 'eventos-inscricao', label: 'Inscrição' },
+    ],
   },
 ];

@@ -2,20 +2,23 @@ import { useEffect, useState } from 'react';
 import { GlassPanel, SectionLabel, ImageSlot, Tag, Button } from '@/design-system';
 import { Reveal } from '@/motion/Reveal';
 import { useMotionAllowed } from '@/motion/MotionContext';
-import { useScrollProgress } from '@/motion/useScrollProgress';
+import { useHorizontalShowcase } from '@/motion/useHorizontalShowcase';
 import { projects } from '@/data/projects';
 import styles from './Projects.module.css';
 
 /**
  * Showcase por segmento — demonstra versatilidade (atendemos qualquer ramo).
- * ⚠️ Cards são exemplos ilustrativos enquanto o portfólio real está em
+ * ⚠️ Cards/telas são exemplos ilustrativos enquanto o portfólio real está em
  * construção; imagens usam placeholder e não há métricas/clientes fabricados.
  *
- * Comportamento: quando o movimento está permitido, a box parte do formato
- * compacto (vidro) e, conforme o usuário rola, expande até preencher 100% da
- * viewport e transiciona o fundo de glassmorphism para sólido/imersivo — ver
- * `ExpandingProjects`. Com movimento desligado, cai para `StaticProjects`.
+ * Comportamento premium (`ShowcaseProjects`): a seção é pinada e passa por três
+ * fases dirigidas por scroll — zoom in da box até tela cheia, scroll horizontal
+ * (split-screen: texto fixo à esquerda + trilho de telas à direita, com o texto
+ * sincronizado ao projeto em foco) e zoom out de volta ao card. Com movimento
+ * desligado ou viewport estreita/baixa, cai para `StaticProjects` (grade).
  */
+
+const pad = (n: number) => String(n).padStart(2, '0');
 
 function Header() {
   return (
@@ -33,17 +36,15 @@ function Header() {
   );
 }
 
+/* ============================ Versão estática ============================ */
+
 function Grid() {
   return (
     <div className={styles.grid}>
       {projects.map((project, i) => (
         <Reveal key={project.id} delay={i * 90}>
           <article className={styles.card}>
-            <ImageSlot
-              placeholder="Projeto em breve"
-              height="calc(140px + 34px * var(--p, 0))"
-              shape="rect"
-            />
+            <ImageSlot placeholder="Projeto em breve" height={170} shape="rect" />
             <div className={styles.body}>
               <SectionLabel tone="magenta" className={styles.segment}>
                 {project.segment}
@@ -63,7 +64,7 @@ function Grid() {
   );
 }
 
-function Footer() {
+function StaticFooter() {
   return (
     <Reveal className={styles.footer}>
       <p className={styles.footerText}>
@@ -74,7 +75,7 @@ function Footer() {
   );
 }
 
-/** Versão estática (sem movimento): a box glass original, como sempre foi. */
+/** Versão estática (sem movimento / viewport pequena): grade de cards. */
 function StaticProjects() {
   return (
     <section id="projetos" className={styles.section}>
@@ -83,29 +84,103 @@ function StaticProjects() {
           <Header />
         </Reveal>
         <Grid />
-        <Footer />
+        <StaticFooter />
       </GlassPanel>
     </section>
   );
 }
 
-/**
- * Versão scroll-driven. `useScrollProgress` escreve `--p` (0→1) no stage; toda
- * a interpolação (tamanho da box, raio, blur, opacidade do fundo sólido,
- * padding/gap/tipografia dos cards) é feita via `calc()` no CSS a partir de
- * `--p` — sem re-render do React por frame.
- */
-function ExpandingProjects() {
-  const { wrapperRef, stageRef } = useScrollProgress<HTMLElement, HTMLDivElement>();
+/* ===================== Versão premium (scroll-driven) ==================== */
+
+/** Coluna esquerda: texto do projeto em foco (cross-fade) + progresso + CTA. */
+function TextColumn({ active }: { active: number }) {
+  return (
+    <div className={styles.textCol}>
+      <SectionLabel className={styles.eyebrow}>Projetos por segmento</SectionLabel>
+
+      <div className={styles.textStack}>
+        {projects.map((project, i) => (
+          <div
+            key={project.id}
+            className={`${styles.textItem} ${i === active ? styles.textActive : ''}`}
+            aria-hidden={i !== active}
+          >
+            <SectionLabel tone="magenta" className={styles.itemSegment}>
+              {project.segment}
+            </SectionLabel>
+            <h3 className={styles.itemTitle}>{project.title}</h3>
+            <p className={styles.itemDesc}>{project.description}</p>
+            <div className={styles.tags}>
+              {project.tags.map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.progress}>
+        <span className={styles.counter}>
+          {pad(active + 1)} <span className={styles.counterTotal}>/ {pad(projects.length)}</span>
+        </span>
+        <div className={styles.dots}>
+          {projects.map((project, i) => (
+            <span
+              key={project.id}
+              className={`${styles.dot} ${i === active ? styles.dotActive : ''}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <Button href="#contato" className={styles.textCta}>
+        Peça seu orçamento
+      </Button>
+    </div>
+  );
+}
+
+function ShowcaseProjects() {
+  const { wrapperRef, stageRef, mediaRef, trackRef, setGroupRef, activeIndex } =
+    useHorizontalShowcase(projects.length);
+
+  // Altura do wrapper: fases de zoom (in+out) + espaço p/ o trilho horizontal.
+  const totalShots = projects.reduce((n, p) => n + p.shots.length, 0);
+  const wrapperHeight = `${180 + totalShots * 30}vh`;
 
   return (
-    <section id="projetos" className={styles.pinWrapper} ref={wrapperRef}>
+    <section
+      id="projetos"
+      className={styles.pinWrapper}
+      ref={wrapperRef}
+      style={{ height: wrapperHeight }}
+    >
       <div className={styles.stage} ref={stageRef}>
-        <div className={styles.box}>
-          <div className={styles.boxInner}>
-            <Header />
-            <Grid />
-            <Footer />
+        <div className={styles.frame}>
+          <div className={styles.split}>
+            <TextColumn active={activeIndex} />
+
+            <div className={styles.mediaCol} ref={mediaRef}>
+              <div className={styles.track} ref={trackRef}>
+                {projects.map((project, i) => (
+                  <div
+                    key={project.id}
+                    className={styles.group}
+                    ref={setGroupRef(i)}
+                  >
+                    <span className={styles.groupIndex}>{pad(i + 1)}</span>
+                    {project.shots.map((shot) => (
+                      <figure key={shot.id} className={styles.shot}>
+                        <ImageSlot placeholder="Prévia em breve" height="100%" />
+                        <figcaption className={styles.shotCaption}>
+                          {shot.label}
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -113,23 +188,23 @@ function ExpandingProjects() {
   );
 }
 
+/* ============================== Seleção ================================== */
+
 /**
- * A expansão pinada só faz sentido onde a fileira de 4 cards cabe confortável
- * em 100vh: telas largas o bastante para os cards não quebrarem em muitas
- * linhas (≥1200px) e altas o bastante para header + cards + CTA caberem
- * (≥760px). Fora disso, cai para a versão estática (que não depende de altura).
- * Reavalia em resize/rotação.
+ * A experiência pinada só roda onde o split-screen respira: telas largas
+ * (≥1200px) e altas o bastante (≥760px). Fora disso, ou com movimento
+ * desligado, cai para a grade estática. Reavalia em resize/rotação.
  */
-const EXPAND_QUERY = '(min-width: 1200px) and (min-height: 760px)';
+const SHOWCASE_QUERY = '(min-width: 1200px) and (min-height: 760px)';
 
 function useWideViewport() {
   const [wide, setWide] = useState(() =>
     typeof window !== 'undefined'
-      ? window.matchMedia(EXPAND_QUERY).matches
+      ? window.matchMedia(SHOWCASE_QUERY).matches
       : true,
   );
   useEffect(() => {
-    const mq = window.matchMedia(EXPAND_QUERY);
+    const mq = window.matchMedia(SHOWCASE_QUERY);
     const update = () => setWide(mq.matches);
     update();
     mq.addEventListener('change', update);
@@ -141,5 +216,5 @@ function useWideViewport() {
 export function Projects() {
   const motionAllowed = useMotionAllowed();
   const wide = useWideViewport();
-  return motionAllowed && wide ? <ExpandingProjects /> : <StaticProjects />;
+  return motionAllowed && wide ? <ShowcaseProjects /> : <StaticProjects />;
 }
