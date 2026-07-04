@@ -76,7 +76,6 @@
   justify-content: center;
   gap: 26px;
   padding: 96px 40px 44px 52px;
-  border-right: 1px solid var(--border-subtle);
 }
 
 .eyebrow {
@@ -184,72 +183,80 @@
   height: 100%;
   display: flex;
   align-items: center;
-  gap: 68px;
-  padding: 0 7vw;
+  gap: 5vw;
+  padding: 0 6vw;
   transform: translate3d(calc(-1 * var(--tx)), 0, 0);
   will-change: transform;
 }
 
+/*
+ * Cada projeto é um "painel" com sua própria grade de telas. Fora de foco, o
+ * painel recua (escala + opacidade); ao virar o projeto ativo, ele avança e as
+ * telas assentam com stagger — sincronizado ao texto da esquerda.
+ */
 .group {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  padding-inline: 8px;
+  flex: 0 0 auto;
+  display: grid;
+  gap: 20px;
+  width: min(48vw, 780px);
+  height: min(70vh, 600px);
+  opacity: 0.4;
+  transform: scale(0.94);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.groupIndex {
-  position: absolute;
-  top: 50%;
-  left: -18px;
-  transform: translateY(-50%);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 17vh;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
-  pointer-events: none;
-  z-index: 0;
+.groupActive {
+  opacity: 1;
+  transform: none;
+}
+
+/* ----- Presets de grade (variam por projeto) ----- */
+.duo {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.trio {
+  grid-template-columns: 1.35fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.trio figure.shot:first-child {
+  grid-row: 1 / span 2;
+}
+
+.quad {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1.12fr 1fr;
 }
 
 .shot {
-  flex: 0 0 auto;
   position: relative;
-  z-index: 1;
-  width: 300px;
-  height: 360px;
+  min-width: 0;
+  min-height: 0;
   margin: 0;
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--border-glass);
   background: var(--surface-card);
   box-shadow: var(--shadow-glass);
-  transition: box-shadow 0.5s ease;
+  /* Repouso levemente deslocado; assenta quando o painel entra em foco. */
+  transform: translateY(18px) scale(0.985);
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
-/* Dispersão: variação de tamanho, deslocamento vertical e leve rotação. */
-.group figure.shot:nth-of-type(3n + 1) {
-  width: 322px;
-  height: 404px;
-  transform: translateY(-6%) rotate(-1.2deg);
-}
-
-.group figure.shot:nth-of-type(3n + 2) {
-  width: 258px;
-  height: 316px;
-  transform: translateY(9%) rotate(1deg);
-}
-
-.group figure.shot:nth-of-type(3n + 3) {
-  width: 292px;
-  height: 358px;
-  transform: translateY(-2%) rotate(0.6deg);
+.groupActive .shot {
+  transform: none;
+  transition-delay: calc(var(--i) * 85ms);
 }
 
 .shot:hover {
-  box-shadow: 0 26px 60px rgba(255, 0, 255, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(0, 255, 255, 0.45);
+  box-shadow: 0 26px 60px rgba(255, 0, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  z-index: 2;
 }
 
 .shot :global(img),

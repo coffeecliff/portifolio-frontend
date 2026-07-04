@@ -106,8 +106,8 @@ export function useHorizontalShowcase(groupCount: number) {
       stage.style.setProperty('--zoom', zoom.toFixed(4));
       stage.style.setProperty('--tx', `${tx.toFixed(2)}px`);
 
-      // Grupo em foco: ponto de referência ~35% da máscara, em coord. do trilho.
-      const anchor = tx + mediaW * 0.35;
+      // Painel em foco: ponto de referência no centro da máscara (coord. trilho).
+      const anchor = tx + mediaW * 0.5;
       let idx = groups.length - 1;
       for (let i = 0; i < groups.length; i++) {
         if (anchor < groups[i].end) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { GlassPanel, SectionLabel, ImageSlot, Tag, Button } from '@/design-system';
 import { Reveal } from '@/motion/Reveal';
 import { useMotionAllowed } from '@/motion/MotionContext';
@@ -165,12 +165,17 @@ function ShowcaseProjects() {
                 {projects.map((project, i) => (
                   <div
                     key={project.id}
-                    className={styles.group}
+                    className={`${styles.group} ${styles[project.layout]} ${
+                      i === activeIndex ? styles.groupActive : ''
+                    }`}
                     ref={setGroupRef(i)}
                   >
-                    <span className={styles.groupIndex}>{pad(i + 1)}</span>
-                    {project.shots.map((shot) => (
-                      <figure key={shot.id} className={styles.shot}>
+                    {project.shots.map((shot, j) => (
+                      <figure
+                        key={shot.id}
+                        className={styles.shot}
+                        style={{ '--i': j } as CSSProperties}
+                      >
                         <ImageSlot placeholder="Prévia em breve" height="100%" />
                         <figcaption className={styles.shotCaption}>
                           {shot.label}
