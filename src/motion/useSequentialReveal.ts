@@ -6,15 +6,17 @@ import { useMotionAllowed } from './MotionContext';
  * wrapper alto com um stage `sticky`:
  *
  *  1. **Zoom in**  — a box cresce (scale) de card contido até preencher a tela.
- *  2. **Scroll horizontal** — com a box travada em tela cheia, o scroll vertical
- *     vira translação horizontal de um trilho (`track`) dentro de uma máscara
- *     (`media`). O texto da coluna esquerda é sincronizado com o grupo de
- *     imagens em foco (`activeIndex`).
- *  3. **Zoom out** — terminado o trilho, a box encolhe de volta ao card e o
+ *  2. **Sequência de imagens** — com a box travada em tela cheia, o scroll
+ *     vertical avança um índice discreto (`activeIndex`) entre `itemCount`
+ *     imagens. Cada imagem entra com fade+slide da direita, fica fixa
+ *     enquanto é a atual, e sai com fade+slide continuando para a esquerda
+ *     assim que o scroll ultrapassa o limiar dela — a transição em si (não o
+ *     scroll) é quem anima; aqui só decidimos QUAL imagem está ativa.
+ *  3. **Zoom out** — terminada a sequência, a box encolhe de volta ao card e o
  *     scroll vertical normal do site é retomado.
  *
- * Escreve apenas custom properties (`--zoom`, `--tx`) no stage por rAF — sem
- * `setState` por frame. `activeIndex` só muda quando o grupo em foco troca.
+ * Escreve apenas a custom property `--zoom` no stage por rAF — sem `setState`
+ * por frame. `activeIndex` só muda quando o limiar de imagem é cruzado.
  *
  * Degradação: se o movimento estiver desligado (flag global ou
  * prefers-reduced-motion), nada é anexado — o chamador renderiza a versão
@@ -28,35 +30,23 @@ interface Layout {
   travel: number;
   zoomInPx: number;
   zoomOutPx: number;
-  horizontalPx: number;
-  maxTx: number;
-  mediaW: number;
-  groups: { start: number; end: number }[];
+  sequencePx: number;
 }
 
 function clamp01(v: number): number {
   return v < 0 ? 0 : v > 1 ? 1 : v;
 }
 
-export function useHorizontalShowcase(groupCount: number) {
+export function useSequentialReveal(itemCount: number) {
   const motionAllowed = useMotionAllowed();
   const wrapperRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const groupRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const setGroupRef = (i: number) => (el: HTMLElement | null) => {
-    groupRefs.current[i] = el;
-  };
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const stage = stageRef.current;
-    const media = mediaRef.current;
-    const track = trackRef.current;
-    if (!wrapper || !stage || !media || !track || !motionAllowed) return;
+    if (!wrapper || !stage || !motionAllowed || itemCount <= 0) return;
 
     let rafId = 0;
     let active = false;
@@ -68,21 +58,14 @@ export function useHorizontalShowcase(groupCount: number) {
       const zoomInPx = innerH * ZOOM_PHASE_VH;
       const zoomOutPx = innerH * ZOOM_PHASE_VH;
       const travel = wrapper.offsetHeight - innerH;
-      const horizontalPx = Math.max(1, travel - zoomInPx - zoomOutPx);
-      const mediaW = media.clientWidth;
-      const maxTx = Math.max(0, track.scrollWidth - mediaW);
-      const groups = groupRefs.current.map((el) => ({
-        start: el ? el.offsetLeft : 0,
-        end: el ? el.offsetLeft + el.offsetWidth : 0,
-      }));
-      return { travel, zoomInPx, zoomOutPx, horizontalPx, maxTx, mediaW, groups };
+      const sequencePx = Math.max(1, travel - zoomInPx - zoomOutPx);
+      return { travel, zoomInPx, zoomOutPx, sequencePx };
     };
 
     const update = () => {
       rafId = 0;
       if (!layout) return;
-      const { travel, zoomInPx, zoomOutPx, horizontalPx, maxTx, mediaW, groups } =
-        layout;
+      const { travel, zoomInPx, zoomOutPx, sequencePx } = layout;
 
       const scrolled = Math.min(
         Math.max(-wrapper.getBoundingClientRect().top, 0),
@@ -90,31 +73,21 @@ export function useHorizontalShowcase(groupCount: number) {
       );
 
       let zoom: number;
-      let hp: number;
+      let sp: number;
       if (scrolled < zoomInPx) {
         zoom = clamp01(scrolled / zoomInPx);
-        hp = 0;
-      } else if (scrolled > zoomInPx + horizontalPx) {
-        zoom = clamp01(1 - (scrolled - zoomInPx - horizontalPx) / zoomOutPx);
-        hp = 1;
+        sp = 0;
+      } else if (scrolled > zoomInPx + sequencePx) {
+        zoom = clamp01(1 - (scrolled - zoomInPx - sequencePx) / zoomOutPx);
+        sp = 1;
       } else {
         zoom = 1;
-        hp = clamp01((scrolled - zoomInPx) / horizontalPx);
+        sp = clamp01((scrolled - zoomInPx) / sequencePx);
       }
 
-      const tx = hp * maxTx;
       stage.style.setProperty('--zoom', zoom.toFixed(4));
-      stage.style.setProperty('--tx', `${tx.toFixed(2)}px`);
 
-      // Painel em foco: ponto de referência no centro da máscara (coord. trilho).
-      const anchor = tx + mediaW * 0.5;
-      let idx = groups.length - 1;
-      for (let i = 0; i < groups.length; i++) {
-        if (anchor < groups[i].end) {
-          idx = i;
-          break;
-        }
-      }
+      const idx = Math.min(itemCount - 1, Math.floor(sp * itemCount));
       if (idx !== lastActive) {
         lastActive = idx;
         setActiveIndex(idx);
@@ -160,7 +133,7 @@ export function useHorizontalShowcase(groupCount: number) {
       window.removeEventListener('resize', onResize);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [motionAllowed, groupCount]);
+  }, [motionAllowed, itemCount]);
 
-  return { wrapperRef, stageRef, mediaRef, trackRef, setGroupRef, activeIndex };
+  return { wrapperRef, stageRef, activeIndex };
 }

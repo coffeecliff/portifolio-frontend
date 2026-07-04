@@ -1,8 +1,8 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GlassPanel, SectionLabel, ImageSlot, Tag, Button } from '@/design-system';
 import { Reveal } from '@/motion/Reveal';
 import { useMotionAllowed } from '@/motion/MotionContext';
-import { useHorizontalShowcase } from '@/motion/useHorizontalShowcase';
+import { useSequentialReveal } from '@/motion/useSequentialReveal';
 import { projects } from '@/data/projects';
 import styles from './Projects.module.css';
 
@@ -12,10 +12,12 @@ import styles from './Projects.module.css';
  * construção; imagens usam placeholder e não há métricas/clientes fabricados.
  *
  * Comportamento premium (`ShowcaseProjects`): a seção é pinada e passa por três
- * fases dirigidas por scroll — zoom in da box até tela cheia, scroll horizontal
- * (split-screen: texto fixo à esquerda + trilho de telas à direita, com o texto
- * sincronizado ao projeto em foco) e zoom out de volta ao card. Com movimento
- * desligado ou viewport estreita/baixa, cai para `StaticProjects` (grade).
+ * fases dirigidas por scroll — zoom in da box até tela cheia, uma sequência de
+ * imagens (split-screen: texto fixo à esquerda + uma imagem por vez fixa à
+ * direita, que surge com fade+slide da direita, permanece parada e sai
+ * continuando o movimento para a esquerda ao ceder lugar à próxima) e zoom out
+ * de volta ao card. Com movimento desligado ou viewport estreita/baixa, cai
+ * para `StaticProjects` (grade).
  */
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -140,13 +142,24 @@ function TextColumn({ active }: { active: number }) {
   );
 }
 
-function ShowcaseProjects() {
-  const { wrapperRef, stageRef, mediaRef, trackRef, setGroupRef, activeIndex } =
-    useHorizontalShowcase(projects.length);
+/** Todas as telas de todos os projetos, em uma única sequência linear. */
+function useFlatShots() {
+  return useMemo(
+    () =>
+      projects.flatMap((project, projectIndex) =>
+        project.shots.map((shot) => ({ shot, project, projectIndex })),
+      ),
+    [],
+  );
+}
 
-  // Altura do wrapper: fases de zoom (in+out) + espaço p/ o trilho horizontal.
-  const totalShots = projects.reduce((n, p) => n + p.shots.length, 0);
-  const wrapperHeight = `${180 + totalShots * 30}vh`;
+function ShowcaseProjects() {
+  const flatShots = useFlatShots();
+  const { wrapperRef, stageRef, activeIndex } = useSequentialReveal(flatShots.length);
+  const activeProjectIndex = flatShots[activeIndex]?.projectIndex ?? 0;
+
+  // Altura do wrapper: fases de zoom (in+out) + espaço p/ a sequência de imagens.
+  const wrapperHeight = `${180 + flatShots.length * 30}vh`;
 
   return (
     <section
@@ -158,33 +171,25 @@ function ShowcaseProjects() {
       <div className={styles.stage} ref={stageRef}>
         <div className={styles.frame}>
           <div className={styles.split}>
-            <TextColumn active={activeIndex} />
+            <TextColumn active={activeProjectIndex} />
 
-            <div className={styles.mediaCol} ref={mediaRef}>
-              <div className={styles.track} ref={trackRef}>
-                {projects.map((project, i) => (
-                  <div
-                    key={project.id}
-                    className={`${styles.group} ${styles[project.layout]} ${
-                      i === activeIndex ? styles.groupActive : ''
-                    }`}
-                    ref={setGroupRef(i)}
-                  >
-                    {project.shots.map((shot, j) => (
-                      <figure
-                        key={shot.id}
-                        className={styles.shot}
-                        style={{ '--i': j } as CSSProperties}
-                      >
-                        <ImageSlot placeholder="Prévia em breve" height="100%" />
-                        <figcaption className={styles.shotCaption}>
-                          {shot.label}
-                        </figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                ))}
-              </div>
+            <div className={styles.mediaCol}>
+              {flatShots.map(({ shot }, i) => {
+                const phase =
+                  i === activeIndex
+                    ? styles.shotActive
+                    : i < activeIndex
+                      ? styles.shotDone
+                      : styles.shotPending;
+                return (
+                  <figure key={shot.id} className={`${styles.shotItem} ${phase}`}>
+                    <ImageSlot placeholder="Prévia em breve" height="100%" />
+                    <figcaption className={styles.shotCaption}>
+                      {shot.label}
+                    </figcaption>
+                  </figure>
+                );
+              })}
             </div>
           </div>
         </div>

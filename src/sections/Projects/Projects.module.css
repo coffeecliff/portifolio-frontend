@@ -179,7 +179,7 @@
   margin-top: 4px;
 }
 
-/* ----- Coluna direita: máscara + trilho horizontal de telas ----- */
+/* ----- Coluna direita: uma imagem por vez, fixa, entra/sai pela direita ----- */
 
 .mediaCol {
   position: relative;
@@ -187,99 +187,48 @@
   overflow: hidden;
 }
 
-.track {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 5vw;
-  padding: 0 6vw;
-  transform: translate3d(calc(-1 * var(--tx)), 0, 0);
-  will-change: transform;
-}
-
 /*
- * Cada projeto é um "painel" com sua própria grade de telas. Fora de foco, o
- * painel recua (escala + opacidade); ao virar o projeto ativo, ele avança e as
- * telas assentam com stagger — sincronizado ao texto da esquerda.
+ * Cada tela ocupa o mesmo lugar (empilhadas, absolute) e só uma está ativa por
+ * vez. Estado de repouso (não exibida ainda): fora da tela à direita.
+ * `shotDone` (já exibida): fora da tela à esquerda — o movimento nunca
+ * inverte, ele só continua da direita para a esquerda até sair de vez.
  */
-.group {
-  flex: 0 0 auto;
-  display: grid;
-  gap: 20px;
-  width: min(48vw, 780px);
-  height: min(70vh, 600px);
-  /* Mesma coreografia sequencial da coluna de texto. */
-  --fade-out: 0.45s;
-  --fade-in: 0.5s;
-  opacity: 0;
-  transform: scale(0.94);
-  /* Saindo: fadeout imediato. */
-  transition: opacity var(--fade-out) ease, transform var(--fade-out) ease;
-}
-
-.groupActive {
-  opacity: 1;
-  transform: none;
-  /* Entrando: só aparece após o painel anterior sumir por completo. */
-  transition: opacity var(--fade-in) ease var(--fade-out),
-    transform var(--fade-in) ease var(--fade-out);
-}
-
-/* ----- Presets de grade (variam por projeto) ----- */
-.duo {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-}
-
-.trio {
-  grid-template-columns: 1.35fr 1fr;
-  grid-template-rows: repeat(2, 1fr);
-}
-
-.trio figure.shot:first-child {
-  grid-row: 1 / span 2;
-}
-
-.quad {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1.12fr 1fr;
-}
-
-.shot {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  border-radius: 18px;
+.shotItem {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(46vw, 760px);
+  height: min(68vh, 600px);
+  border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--border-glass);
   background: var(--surface-card);
   box-shadow: var(--shadow-glass);
-  /* Repouso levemente deslocado; assenta quando o painel entra em foco. */
-  transform: translateY(18px) scale(0.985);
-  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.4s ease, border-color 0.4s ease;
+  opacity: 0;
+  transform: translateX(9vw);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
 }
 
-.groupActive .shot {
-  transform: none;
-  /* Assenta em stagger junto com o fadein do painel (após o anterior sumir). */
-  transition-delay: calc(var(--fade-out) + var(--i) * 85ms);
+/* Ainda não exibida — mesmo estado de repouso de `.shotItem`, nomeada para clareza. */
+.shotPending {
+  opacity: 0;
+  transform: translateX(9vw);
 }
 
-.shot:hover {
-  transform: translateY(-6px) scale(1.015);
-  border-color: rgba(0, 255, 255, 0.45);
-  box-shadow: 0 26px 60px rgba(255, 0, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  z-index: 2;
+.shotActive {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
-.shot :global(img),
-.shot > div {
+.shotDone {
+  opacity: 0;
+  transform: translateX(-9vw);
+}
+
+.shotItem :global(img),
+.shotItem > div {
   height: 100% !important;
 }
 
