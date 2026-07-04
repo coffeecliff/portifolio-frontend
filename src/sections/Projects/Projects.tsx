@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GlassPanel, SectionLabel, ImageSlot, Tag, Button } from '@/design-system';
 import { Reveal } from '@/motion/Reveal';
 import { useMotionAllowed } from '@/motion/MotionContext';
@@ -13,11 +13,13 @@ import styles from './Projects.module.css';
  *
  * Comportamento premium (`ShowcaseProjects`): a seção é pinada e passa por três
  * fases dirigidas por scroll — zoom in da box até tela cheia, uma sequência de
- * imagens (split-screen: texto fixo à esquerda + uma imagem por vez fixa à
- * direita, que surge com fade+slide da direita, permanece parada e sai
- * continuando o movimento para a esquerda ao ceder lugar à próxima) e zoom out
- * de volta ao card. Com movimento desligado ou viewport estreita/baixa, cai
- * para `StaticProjects` (grade).
+ * projetos (split-screen: texto fixo à esquerda + grade 2×2 das telas do
+ * projeto em foco fixa à direita, que surge com fade+slide da direita,
+ * permanece parada e sai continuando o movimento para a esquerda ao ceder
+ * lugar ao próximo projeto) e zoom out de volta ao card. Um fadein/fadeout por
+ * projeto (não por tela), o que deixa claro onde cada projeto começa e
+ * termina. Com movimento desligado ou viewport estreita/baixa, cai para
+ * `StaticProjects` (grade).
  */
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -142,24 +144,13 @@ function TextColumn({ active }: { active: number }) {
   );
 }
 
-/** Todas as telas de todos os projetos, em uma única sequência linear. */
-function useFlatShots() {
-  return useMemo(
-    () =>
-      projects.flatMap((project, projectIndex) =>
-        project.shots.map((shot) => ({ shot, project, projectIndex })),
-      ),
-    [],
-  );
-}
-
 function ShowcaseProjects() {
-  const flatShots = useFlatShots();
-  const { wrapperRef, stageRef, activeIndex } = useSequentialReveal(flatShots.length);
-  const activeProjectIndex = flatShots[activeIndex]?.projectIndex ?? 0;
+  const { wrapperRef, stageRef, activeIndex } = useSequentialReveal(projects.length);
 
-  // Altura do wrapper: fases de zoom (in+out) + espaço p/ a sequência de imagens.
-  const wrapperHeight = `${180 + flatShots.length * 30}vh`;
+  // Altura do wrapper: fases de zoom (in+out) + espaço p/ a sequência de projetos.
+  // Cada projeto agora é um único ciclo fadein/hold/fadeout (não mais um por
+  // tela), então precisa de mais scroll por item do que os antigos 30vh/tela.
+  const wrapperHeight = `${180 + projects.length * 80}vh`;
 
   return (
     <section
@@ -171,10 +162,10 @@ function ShowcaseProjects() {
       <div className={styles.stage} ref={stageRef}>
         <div className={styles.frame}>
           <div className={styles.split}>
-            <TextColumn active={activeProjectIndex} />
+            <TextColumn active={activeIndex} />
 
             <div className={styles.mediaCol}>
-              {flatShots.map(({ shot }, i) => {
+              {projects.map((project, i) => {
                 const phase =
                   i === activeIndex
                     ? styles.shotActive
@@ -182,12 +173,18 @@ function ShowcaseProjects() {
                       ? styles.shotDone
                       : styles.shotPending;
                 return (
-                  <figure key={shot.id} className={`${styles.shotItem} ${phase}`}>
-                    <ImageSlot placeholder="Prévia em breve" height="100%" />
-                    <figcaption className={styles.shotCaption}>
-                      {shot.label}
-                    </figcaption>
-                  </figure>
+                  <div key={project.id} className={`${styles.shotItem} ${phase}`}>
+                    <div className={styles.shotGrid}>
+                      {project.shots.map((shot) => (
+                        <figure key={shot.id} className={styles.shotCell}>
+                          <ImageSlot placeholder="Prévia em breve" height="100%" />
+                          <figcaption className={styles.shotCaption}>
+                            {shot.label}
+                          </figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
                 );
               })}
             </div>
