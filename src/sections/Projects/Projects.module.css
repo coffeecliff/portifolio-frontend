@@ -85,6 +85,13 @@
 .textStack {
   position: relative;
   min-height: 290px;
+  /*
+   * Fade sequencial (não cross-fade): o item que sai some primeiro; o que entra
+   * só aparece depois. Conseguido com transition-delay = duração do fadeout no
+   * estado ativo, enquanto o estado de repouso transiciona sem delay (sai já).
+   */
+  --fade-out: 0.4s;
+  --fade-in: 0.45s;
 }
 
 .textItem {
@@ -95,7 +102,8 @@
   gap: 16px;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  /* Saindo: fadeout imediato, sem delay. */
+  transition: opacity var(--fade-out) ease, transform var(--fade-out) ease;
   pointer-events: none;
 }
 
@@ -103,6 +111,9 @@
   opacity: 1;
   transform: none;
   pointer-events: auto;
+  /* Entrando: espera o anterior terminar o fadeout antes de aparecer. */
+  transition: opacity var(--fade-in) ease var(--fade-out),
+    transform var(--fade-in) ease var(--fade-out);
 }
 
 .itemSegment {
@@ -200,14 +211,21 @@
   gap: 20px;
   width: min(48vw, 780px);
   height: min(70vh, 600px);
-  opacity: 0.4;
+  /* Mesma coreografia sequencial da coluna de texto. */
+  --fade-out: 0.45s;
+  --fade-in: 0.5s;
+  opacity: 0;
   transform: scale(0.94);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  /* Saindo: fadeout imediato. */
+  transition: opacity var(--fade-out) ease, transform var(--fade-out) ease;
 }
 
 .groupActive {
   opacity: 1;
   transform: none;
+  /* Entrando: só aparece após o painel anterior sumir por completo. */
+  transition: opacity var(--fade-in) ease var(--fade-out),
+    transform var(--fade-in) ease var(--fade-out);
 }
 
 /* ----- Presets de grade (variam por projeto) ----- */
@@ -248,7 +266,8 @@
 
 .groupActive .shot {
   transform: none;
-  transition-delay: calc(var(--i) * 85ms);
+  /* Assenta em stagger junto com o fadein do painel (após o anterior sumir). */
+  transition-delay: calc(var(--fade-out) + var(--i) * 85ms);
 }
 
 .shot:hover {
