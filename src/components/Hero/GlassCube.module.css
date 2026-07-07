@@ -29,9 +29,15 @@
   z-index: 1;
   width: 100% !important;
   height: 100% !important;
-  /* canvas fica restrito ao stage (não é viewport-wide) e não captura eventos,
-     então nunca interfere no scroll da página como o canvas da onda faria */
-  pointer-events: none;
+  /* canvas fica restrito ao stage (não é viewport-wide), então capturar
+     pointer events aqui (para o arraste do cubo) nunca interfere no scroll
+     da página como o canvas da onda faria. pointer-events real é definido
+     inline pelo componente (auto só quando motionEnabled). */
+  cursor: grab;
+}
+
+.canvas:active {
+  cursor: grabbing;
 }
 
 @keyframes pulseGlow {
