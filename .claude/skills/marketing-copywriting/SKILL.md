@@ -25,7 +25,7 @@ copy *é* parte do argumento de venda.
 
 ## Contexto do produto (o que estamos vendendo)
 
-Esta é a landing page de uma **dupla freelancer de front-end**. O produto/serviço
+Esta é a landing page de uma **equipe freelancer de front-end**. O produto/serviço
 é a **criação de landing pages e sites de alto padrão** — a **solução digital
 completa**, **independente do ramo do cliente** (varejo, saúde, serviços, tech,
 eventos, etc.).
@@ -91,7 +91,7 @@ qualquer segmento) e **alto padrão de acabamento**.
   hardcoded em JSX. Editar copy não deve exigir tocar em componentes.
 - Muita copy atual é **placeholder herdado do protótipo** ("coletivo de
   tecnologia de elite", links `AAAA`/`BBBB`). Trate como provisório e alinhe ao
-  posicionamento real ao mexer — sem inventar histórico que a dupla não tem.
+  posicionamento real ao mexer — sem inventar histórico que a equipe não tem.
 
 ## Fluxo ao receber uma tarefa de copy
 
@@ -106,7 +106,7 @@ qualquer segmento) e **alto padrão de acabamento**.
 ## Não faça
 
 - Não invente números, depoimentos, clientes, prazos ou garantias.
-- Não faça promessa que a dupla não pode cumprir.
+- Não faça promessa que a equipe não pode cumprir.
 - Não hardcode copy em JSX (vai para `src/data/*.ts`, pensando em i18n).
 - Não use tom arrogante, hypado ou jargão que afaste público não-técnico.
 - Não perca o foco da oferta: criação de landing pages/sites de alto padrão,

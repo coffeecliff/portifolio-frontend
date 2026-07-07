@@ -8,7 +8,7 @@ export interface Service {
 }
 
 /**
- * Serviços da dupla, traduzidos em benefício para o cliente (framework FAB).
+ * Serviços da equipe, traduzidos em benefício para o cliente (framework FAB).
  * Reforçam a oferta central — landing pages e sites de alto padrão — e a
  * versatilidade para qualquer segmento.
  */

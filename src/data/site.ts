@@ -3,7 +3,7 @@
  * Centraliza strings de identidade e canais para facilitar troca e i18n futura.
  *
  * ⚠️ PLACEHOLDERS: nome de marca e canais de contato abaixo são provisórios —
- * substituir pelos dados reais da dupla antes de publicar.
+ * substituir pelos dados reais da equipe antes de publicar.
  */
 
 export interface ContactChannel {
@@ -34,13 +34,13 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  // Placeholder — substituir pelo nome real da dupla/estúdio.
+  // Placeholder — substituir pelo nome real da equipe/estúdio.
   brandName: 'VÉRTICE',
   brandMark: '◈',
-  tagline: 'Dupla freelancer de front-end — landing pages e sites de alto padrão.',
+  tagline: 'Equipe freelancer de front-end — landing pages e sites de alto padrão.',
 
   hero: {
-    eyebrow: 'Dupla freelancer de front-end',
+    eyebrow: 'Equipe freelancer de front-end',
     titleLines: ['Sites que vendem', 'por você.'],
     lead: 'Criamos landing pages e sites de alto padrão para qualquer segmento — do design à entrega. Presença digital rápida, bonita e feita para transformar visitantes em clientes.',
     primaryCta: { label: 'Fale conosco', href: '#contato' },

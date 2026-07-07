@@ -21,7 +21,7 @@ visual que captura e retém a atenção do usuário no primeiro segundo, com
 refinamento estético e fluidez de interação — **sem nunca** virar barreira de
 entrada em hardware fraco.
 
-Este site é a própria vitrine de uma dupla freelancer de front-end. A qualidade
+Este site é a própria vitrine de uma equipe freelancer de front-end. A qualidade
 dele *é* o argumento de venda. Todo trabalho reforça **profissionalismo,
 confiança e alto padrão de acabamento**, com caminho evidente para o contato.
 

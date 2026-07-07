@@ -14,7 +14,7 @@ export function Services() {
             Sua solução digital completa, do design à entrega
           </h2>
           <p className={styles.intro}>
-            Somos uma dupla enxuta e especializada em front-end. Atendemos
+            Somos uma equipe enxuta e especializada em front-end. Atendemos
             qualquer segmento — varejo, saúde, serviços, tech, eventos — com o
             mesmo alto padrão de acabamento em cada projeto.
           </p>

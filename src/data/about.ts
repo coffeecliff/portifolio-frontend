@@ -3,7 +3,7 @@
  * Fala da marca (não expõe os indivíduos), constrói confiança e reforça o alto
  * padrão. Sem métricas/clientes inventados — apenas posicionamento verdadeiro.
  *
- * ⚠️ PLACEHOLDER: os textos abaixo são posicionamento genérico da dupla.
+ * ⚠️ PLACEHOLDER: os textos abaixo são posicionamento genérico da equipe.
  * Refine com a história real do estúdio antes de publicar (sem inventar dados).
  */
 
@@ -26,8 +26,8 @@ export const about: AboutContent = {
   eyebrow: 'Sobre o estúdio',
   title: 'Um estúdio enxuto, obcecado por acabamento',
   paragraphs: [
-    'A VÉRTICE nasceu para resolver um problema simples: a maioria dos sites parece igual e não vende. Somos uma dupla de front-end que trata cada projeto como a nossa própria vitrine — do primeiro pixel à entrega final.',
-    'Trabalhamos lado a lado, sem intermediários e sem burocracia de agência. Isso significa comunicação direta, decisões rápidas e um cuidado artesanal com cada detalhe da sua presença digital — não importa o seu segmento.',
+    'A VÉRTICE nasceu para resolver um problema simples: a maioria dos sites parece igual e não vende. Somos uma equipe de front-end que trata cada projeto como a nossa própria vitrine — do primeiro pixel à entrega final.',
+    'Trabalhamos unidos, sem intermediários e sem burocracia de agência. Isso significa comunicação direta, decisões rápidas e um cuidado artesanal com cada detalhe da sua presença digital — não importa o seu segmento.',
   ],
   pillars: [
     {
@@ -40,7 +40,7 @@ export const about: AboutContent = {
       id: 'pillar-direct',
       title: 'Contato direto com quem faz',
       description:
-        'Você fala diretamente com a dupla que desenha e desenvolve. Sem ruído, sem repasse — mais agilidade e clareza.',
+        'Você fala diretamente com a equipe que desenha e desenvolve. Sem ruído, sem repasse — mais agilidade e clareza.',
     },
     {
       id: 'pillar-conversion',

@@ -20,7 +20,7 @@ export interface TechItem {
 }
 
 /**
- * Stack real usada pela dupla. Reforça credibilidade, mas comunicada pelo
+ * Stack real usada pela equipe. Reforça credibilidade, mas comunicada pelo
  * RESULTADO que gera no site do cliente — não por jargão técnico. Só
  * ferramentas que de fato usamos; sem enfeite.
  */

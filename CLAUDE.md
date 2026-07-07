@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Contexto do projeto
 
-Esta é a **landing page de portfólio de uma dupla freelancer de front-end**. O
+Esta é a **landing page de portfólio de uma equipe freelancer de front-end**. O
 objetivo do site é **vender**: apresentar nossa capacidade técnica e de design a
 potenciais clientes e converter visitantes em contatos/orçamentos.
 
@@ -95,7 +95,7 @@ não para o resultado final "definitivo" de hoje.
 
 Esta landing page tem uma estética **fixa e inegociável** que **toda** nova
 seção, componente ou integração pedida pelo usuário deve seguir. É a porta de
-entrada para o cliente entrar em contato com a nossa dupla e fechar negócio de
+entrada para o cliente entrar em contato com a nossa equipe e fechar negócio de
 **sites e landing pages personalizadas** — então o visual precisa transmitir
 alto padrão a cada pixel.
 
@@ -165,13 +165,13 @@ microcopy):
 ## Estado atual do conteúdo (importante)
 
 Boa parte da copy e dos dados ainda são **placeholders herdados do protótipo
-original** do Claude Design e **não** refletem o posicionamento real da dupla
+original** do Claude Design e **não** refletem o posicionamento real da equipe
 freelancer. Trate-os como provisórios e alinhe-os ao contexto acima quando for
 mexer neles:
 
 - `src/data/site.ts` — nome de marca (`VÉRTICE`) e canais de contato
   (WhatsApp/e-mail/Instagram/LinkedIn) ainda são provisórios; trocar pelos dados
-  reais da dupla antes de publicar.
+  reais da equipe antes de publicar.
 - `src/data/projects.ts` — projetos de exemplo por segmento ("Portfólio em
   construção"); substituir pelos trabalhos reais.
 - `src/data/about.ts` — copy de posicionamento genérica do estúdio; refinar com
