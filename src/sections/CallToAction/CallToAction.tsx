@@ -17,7 +17,7 @@ export function CallToAction() {
           </h2>
           <p className={styles.text}>
             Conte o que você precisa. Respondemos rápido com um plano e um
-            orçamento — sem compromisso e sem enrolação.
+            orçamento, sem compromisso e sem enrolação.
           </p>
           <div className={styles.actions}>
             <Button href={whatsapp.href}>{whatsapp.label}</Button>

@@ -33,7 +33,7 @@ export const techStack: TechItem[] = [
   {
     name: 'TypeScript',
     icon: SiTypescript,
-    benefit: 'Menos bugs e um site estável — a base sólida por trás da entrega.',
+    benefit: 'Menos bugs e um site estável, a base sólida por trás da entrega.',
   },
   {
     name: 'Vite',
@@ -53,6 +53,6 @@ export const techStack: TechItem[] = [
   {
     name: 'Figma',
     icon: SiFigma,
-    benefit: 'Você aprova o visual antes de programarmos — sem surpresas no final.',
+    benefit: 'Você aprova o visual antes de programarmos, sem surpresas no final.',
   },
 ];

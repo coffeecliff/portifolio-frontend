@@ -27,7 +27,7 @@ export const services: Service[] = [
     tag: 'Autoridade',
     title: 'Sites institucionais & portfólios',
     description:
-      'Presença digital completa que transmite credibilidade e o alto padrão da sua marca — a vitrine que o seu negócio merece.',
+      'Presença digital completa que transmite credibilidade e o alto padrão da sua marca, a vitrine que o seu negócio merece.',
   },
   {
     id: 'srv-design',

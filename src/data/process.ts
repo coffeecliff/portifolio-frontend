@@ -16,14 +16,14 @@ export const processSteps: ProcessStep[] = [
     title: 'Briefing & estratégia',
     desc: 'Entendemos o seu negócio, o seu público e o objetivo do site antes de desenhar qualquer coisa.',
     detail:
-      'Uma conversa direta para mapear o que você vende, para quem e qual ação o site precisa gerar. Saímos daqui com um escopo claro, prazo e o caminho de conversão definido — sem retrabalho depois.',
+      'Uma conversa direta para mapear o que você vende, para quem e qual ação o site precisa gerar. Saímos daqui com um escopo claro, prazo e o caminho de conversão definido, sem retrabalho depois.',
   },
   {
     step: '02',
     title: 'Design & protótipo',
     desc: 'Criamos o layout sob medida e alinhamos cada tela com você antes de programar.',
     detail:
-      'Você aprova a identidade visual, a estrutura das seções e a copy em um protótipo navegável. Ajustamos até ficar do jeito certo — o que evita surpresas e garante que o resultado combine com a sua marca.',
+      'Você aprova a identidade visual, a estrutura das seções e a copy em um protótipo navegável. Ajustamos até ficar do jeito certo, o que evita surpresas e garante que o resultado combine com a sua marca.',
   },
   {
     step: '03',
@@ -37,6 +37,6 @@ export const processSteps: ProcessStep[] = [
     title: 'Entrega & suporte',
     desc: 'Publicamos o site no ar e acompanhamos os primeiros passos ao seu lado.',
     detail:
-      'Cuidamos da publicação e deixamos tudo funcionando. Depois seguimos disponíveis para ajustes e evoluções — porque o seu site é um ativo vivo do negócio, não um projeto que termina no deploy.',
+      'Cuidamos da publicação e deixamos tudo funcionando. Depois seguimos disponíveis para ajustes e evoluções, porque o seu site é um ativo vivo do negócio, não um projeto que termina no deploy.',
   },
 ];

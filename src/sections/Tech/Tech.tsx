@@ -18,7 +18,7 @@ export function Tech() {
           </h2>
           <p className={styles.intro}>
             Você não precisa entender de código. Precisa de um site rápido,
-            bonito e que funciona. Estas são as tecnologias por trás disso — e o
+            bonito e que funciona. Estas são as tecnologias por trás disso, e o
             que cada uma entrega para a sua presença digital.
           </p>
         </Reveal>

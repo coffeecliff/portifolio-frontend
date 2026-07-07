@@ -42,7 +42,7 @@ export const site: SiteConfig = {
   hero: {
     eyebrow: 'Equipe freelancer de front-end',
     titleLines: ['Sites que vendem', 'por você.'],
-    lead: 'Criamos landing pages e sites de alto padrão para qualquer segmento — do design à entrega. Presença digital rápida, bonita e feita para transformar visitantes em clientes.',
+    lead: 'Criamos landing pages e sites de alto padrão para qualquer segmento, do design à entrega. Presença digital rápida, bonita e feita para transformar visitantes em clientes.',
     primaryCta: { label: 'Fale conosco', href: '#contato' },
     secondaryCta: { label: 'Ver projetos', href: '#projetos' },
     scrollHint: 'ROLE PARA VER',
