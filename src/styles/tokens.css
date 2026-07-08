@@ -64,7 +64,16 @@
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   /* ===== Layout ===== */
-  --container-max: 1200px;
+  /*
+   * Padrão único de largura horizontal — todas as boxes (seções) e o header
+   * flutuante (Nav) derivam daqui, para manter a "linha imaginária" de
+   * alinhamento entre eles. Alvo: até 80% da viewport, com um teto em px para
+   * não ficar absurdamente largo em monitores ultrawide/4K.
+   */
+  --layout-width: min(1800px, 80vw);
+  /* Boxes de seção: largura visível (--layout-width) + os 48px de padding
+     lateral que cada .section aplica antes do conteúdo/GlassPanel. */
+  --container-max: calc(var(--layout-width) + 48px);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;

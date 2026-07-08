@@ -4,7 +4,9 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: min(1200px, calc(100% - 32px));
+  /* Mesmo padrão de largura das boxes de seção (--layout-width), com uma
+     margem mínima de segurança em telas muito estreitas. */
+  width: min(var(--layout-width), calc(100% - 32px));
   display: flex;
   align-items: center;
   justify-content: space-between;
