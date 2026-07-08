@@ -1,22 +1,56 @@
+/*
+ * `--nav-progress` vai de 0 (topo do Hero: header integrado ao fundo, sem
+ * bordas, largura cheia) a 1 (rolado: header flutuante de vidro, no mesmo
+ * padrão de largura das boxes de seção). É escrito via JS em função do
+ * scroll (ver Nav.tsx); o fallback (1) cobre o instante antes do primeiro
+ * cálculo e cenários sem JS, mantendo o estado docado/seguro por padrão.
+ *
+ * Importante: só a "barra" visual (::before) anima com o progresso — a
+ * posição do conteúdo (.inner) é sempre a mesma (já nasce no lugar onde vai
+ * ficar quando docado), pra brand/links/CTA nunca darem um salto de lugar.
+ * O que muda com o scroll é só o vidro/borda se formando ao redor deles.
+ */
 .nav {
   position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
-  /* Mesmo padrão de largura das boxes de seção (--layout-width), com uma
-     margem mínima de segurança em telas muito estreitas. */
-  width: min(var(--layout-width), calc(100% - 32px));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px 12px 22px;
-  border-radius: 18px;
+}
+
+.nav::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--nav-progress, 1) * 18px);
+  left: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  right: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: calc(var(--nav-progress, 1) * 18px);
   background: var(--surface-glass);
   backdrop-filter: blur(11px);
   -webkit-backdrop-filter: blur(11px);
   border: 1px solid var(--border-glass);
   box-shadow: 0 8px 32px rgba(138, 43, 226, 0.18);
+  opacity: var(--nav-progress, 1);
+  transition: top 0.25s ease-out, left 0.25s ease-out, right 0.25s ease-out,
+    border-radius 0.25s ease-out, opacity 0.25s ease-out;
+}
+
+.noTransition::before {
+  transition: none;
+}
+
+/* Posição fixa do conteúdo: padding equivalente ao estado docado (18px de
+   folga + 12px do padding do vidro), pra já nascer no lugar certo. */
+.inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px calc(((100% - var(--layout-width)) / 2) + 14px) 12px
+    calc(((100% - var(--layout-width)) / 2) + 22px);
 }
 
 .brand {
