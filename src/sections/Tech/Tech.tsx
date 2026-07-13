@@ -9,7 +9,7 @@ import styles from './Tech.module.css';
  */
 export function Tech() {
   return (
-    <section id="tecnologias" className={styles.section}>
+    <section id="stacks" className={styles.section}>
       <GlassPanel>
         <Reveal>
           <SectionHeader
