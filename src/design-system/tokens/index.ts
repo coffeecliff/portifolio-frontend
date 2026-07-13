@@ -11,6 +11,7 @@ export const colors = {
   magentaSoft: '#ff66ff',
   cyan: '#00ffff',
   purpleMedium: '#9370db',
+  ink: '#08030f',
 } as const;
 
 export const fonts = {

@@ -1,7 +1,5 @@
 export interface Service {
   id: string;
-  /** Numeração exibida como acento (01, 02, …). */
-  index: string;
   tag: string;
   title: string;
   description: string;
@@ -15,7 +13,6 @@ export interface Service {
 export const services: Service[] = [
   {
     id: 'srv-landing',
-    index: '01',
     tag: 'Conversão',
     title: 'Landing pages que convertem',
     description:
@@ -23,7 +20,6 @@ export const services: Service[] = [
   },
   {
     id: 'srv-sites',
-    index: '02',
     tag: 'Autoridade',
     title: 'Sites institucionais & portfólios',
     description:
@@ -31,7 +27,6 @@ export const services: Service[] = [
   },
   {
     id: 'srv-design',
-    index: '03',
     tag: 'Sob medida',
     title: 'Design exclusivo, nada de template',
     description:
@@ -39,7 +34,6 @@ export const services: Service[] = [
   },
   {
     id: 'srv-perf',
-    index: '04',
     tag: 'Performance',
     title: 'Rápido e impecável em qualquer tela',
     description:

@@ -1,7 +1,7 @@
 .section {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 30px 24px 50px;
+  padding: 30px var(--space-md) 50px;
   scroll-margin-top: 96px;
 }
 
@@ -293,8 +293,8 @@
   color: var(--text-muted);
   background: linear-gradient(
     to top,
-    rgba(8, 3, 15, 0.82),
-    rgba(8, 3, 15, 0)
+    color-mix(in srgb, var(--color-ink) 82%, transparent),
+    transparent
   );
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -346,8 +346,8 @@
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 22px 54px rgba(138, 43, 226, 0.35);
-  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 22px 54px color-mix(in srgb, var(--color-violet) 35%, transparent);
+  border-color: color-mix(in srgb, var(--color-cyan) 50%, transparent);
 }
 
 .body {

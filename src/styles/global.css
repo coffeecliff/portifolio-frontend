@@ -20,7 +20,7 @@ body {
 }
 
 ::selection {
-  background: rgba(255, 0, 255, 0.35);
+  background: color-mix(in srgb, var(--color-magenta) 35%, transparent);
 }
 
 ::-webkit-scrollbar {

@@ -1,7 +1,7 @@
 .section {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 40px 24px 50px;
+  padding: var(--space-lg) var(--space-md) 50px;
   scroll-margin-top: 96px;
 }
 
@@ -45,7 +45,7 @@
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 44px rgba(255, 0, 255, 0.2);
+  box-shadow: var(--shadow-hover-magenta);
   border-color: var(--color-magenta-soft);
 }
 

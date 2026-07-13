@@ -42,7 +42,7 @@ function useGlassBackdropTexture() {
       [size * 0.2, size * 0.24, size * 0.62, colors.cyan],
       [size * 0.82, size * 0.7, size * 0.68, colors.magenta],
       [size * 0.5, size * 0.9, size * 0.56, colors.purpleMedium],
-      [size * 0.58, size * 0.14, size * 0.4, '#ffffff'],
+      [size * 0.58, size * 0.14, size * 0.4, colors.fg],
     ];
     for (const [x, y, r, color] of blobs) {
       const gradient = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -153,8 +153,8 @@ function CubeMesh({ motionEnabled }: CubeMeshProps) {
         distortion={0.2}
         distortionScale={0.4}
         temporalDistortion={0.1}
-        color="#ffffff"
-        attenuationColor="#ffffff"
+        color={colors.fg}
+        attenuationColor={colors.fg}
         attenuationDistance={3}
         clearcoat={1}
         clearcoatRoughness={0.06}
@@ -173,7 +173,7 @@ function CubeLighting() {
       <Lightformer intensity={8} color={colors.cyan} position={[-4, 2, 4]} scale={[4, 3, 1]} />
       <Lightformer intensity={8} color={colors.magenta} position={[4, -2, -3]} scale={[4, 3, 1]} />
       <Lightformer intensity={5} color={colors.purpleMedium} position={[0, 4, -2]} scale={[5, 4, 1]} />
-      <Lightformer intensity={4} color="#ffffff" position={[0, -3, 3]} scale={[3, 2, 1]} />
+      <Lightformer intensity={4} color={colors.fg} position={[0, -3, 3]} scale={[3, 2, 1]} />
     </Environment>
   );
 }

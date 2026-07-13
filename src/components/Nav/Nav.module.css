@@ -32,7 +32,7 @@
   backdrop-filter: blur(11px);
   -webkit-backdrop-filter: blur(11px);
   border: 1px solid var(--border-glass);
-  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.18);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-violet) 18%, transparent);
   opacity: var(--nav-progress, 1);
   transition: top 0.25s ease-out, left 0.25s ease-out, right 0.25s ease-out,
     border-radius 0.25s ease-out, opacity 0.25s ease-out;
@@ -68,7 +68,7 @@
   place-items: center;
   border-radius: var(--radius-sm);
   background: var(--gradient-brand);
-  box-shadow: 0 0 18px rgba(255, 0, 255, 0.6);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-magenta) 60%, transparent);
   font-size: 13px;
 }
 
@@ -87,7 +87,7 @@
 
 .link {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.72);
+  color: color-mix(in srgb, var(--color-fg) 72%, transparent);
   font-size: 13px;
   font-weight: 500;
   padding: 8px 12px;
@@ -97,7 +97,7 @@
 
 .link:hover {
   color: var(--text-strong);
-  background: rgba(255, 255, 255, 0.07);
+  background: color-mix(in srgb, var(--color-fg) 7%, transparent);
 }
 
 .cta {

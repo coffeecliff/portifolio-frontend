@@ -1,4 +1,4 @@
-import { GlassPanel, SectionLabel } from '@/design-system';
+import { GlassPanel, SectionHeader, GradientBorderCard } from '@/design-system';
 import { Reveal } from '@/motion/Reveal';
 import { about } from '@/data/about';
 import styles from './About.module.css';
@@ -10,8 +10,7 @@ export function About() {
       <GlassPanel>
         <div className={styles.layout}>
           <Reveal className={styles.intro}>
-            <SectionLabel className={styles.label}>{about.eyebrow}</SectionLabel>
-            <h2 className={styles.title}>{about.title}</h2>
+            <SectionHeader eyebrow={about.eyebrow} title={about.title} />
             {about.paragraphs.map((paragraph, i) => (
               <p key={i} className={styles.paragraph}>
                 {paragraph}
@@ -22,10 +21,10 @@ export function About() {
           <div className={styles.pillars}>
             {about.pillars.map((pillar, i) => (
               <Reveal key={pillar.id} delay={i * 90} className={styles.pillarWrap}>
-                <article className={styles.pillar}>
+                <GradientBorderCard accent="violet" className={styles.pillar}>
                   <h3 className={styles.pillarTitle}>{pillar.title}</h3>
                   <p className={styles.pillarDesc}>{pillar.description}</p>
-                </article>
+                </GradientBorderCard>
               </Reveal>
             ))}
           </div>

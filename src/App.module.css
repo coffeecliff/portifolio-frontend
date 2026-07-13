@@ -11,10 +11,14 @@
   pointer-events: none;
   background: radial-gradient(
       900px 600px at 78% 18%,
-      rgba(138, 43, 226, 0.28),
+      color-mix(in srgb, var(--color-violet) 28%, transparent),
       transparent 60%
     ),
-    radial-gradient(700px 700px at 12% 85%, rgba(255, 0, 255, 0.14), transparent 60%),
+    radial-gradient(
+      700px 700px at 12% 85%,
+      color-mix(in srgb, var(--color-magenta) 14%, transparent),
+      transparent 60%
+    ),
     var(--color-bg);
 }
 

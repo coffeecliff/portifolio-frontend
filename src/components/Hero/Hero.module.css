@@ -19,7 +19,7 @@
 .eyebrow {
   margin-bottom: 22px;
   letter-spacing: 0.34em;
-  text-shadow: 0 0 14px rgba(0, 255, 255, 0.6);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--color-cyan) 60%, transparent);
 }
 
 .title {
@@ -30,7 +30,7 @@
   letter-spacing: -0.02em;
   margin: 0;
   color: var(--text-strong);
-  text-shadow: 0 4px 60px rgba(138, 43, 226, 0.45);
+  text-shadow: 0 4px 60px color-mix(in srgb, var(--color-violet) 45%, transparent);
 }
 
 .lead {
@@ -64,6 +64,6 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.28em;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-faint);
 }
 

@@ -131,11 +131,36 @@ Não introduza nenhuma cor fora dessas famílias (nada de verdes, âmbares, azui
 - Se qualquer valor de cor/tipografia mudar, atualize **os dois** espelhos
   (`src/styles/tokens.css` e `src/design-system/tokens/index.ts`) juntos.
 - Este arquivo é a **base do projeto** e deve permanecer sempre atualizado. As
-  skills (`frontend-3d-ux`, `marketing-copywriting`) apenas auxiliam módulos
+  skills (`frontend`, `marketing-copywriting`) apenas auxiliam módulos
   específicos quando conveniente — elas **não** substituem estas regras.
 - **Coerência com as skills:** mantenha este CLAUDE.md alinhado às skills. Se
   surgir divergência (paleta, tom, arquitetura), **pergunte ao usuário** qual
   prefere e **atualize este arquivo** com a decisão antes de prosseguir.
+- **Precedência confirmada (paleta):** a skill `frontend` (design genérico, foco
+  em evitar "cara de IA" e tomar decisões específicas do brief) **não**
+  autoriza trocar a paleta trava da acima. Aplique-a apenas onde o CLAUDE.md
+  não trava a decisão — tipografia, hierarquia, layout, elemento-assinatura,
+  ritmo de motion. Cor/tema seguem exclusivamente a paleta e o dark-mode fixos
+  definidos neste arquivo.
+
+### Dinamismo, autenticidade e scroll (regra rígida — não coberta pela skill `frontend`)
+
+A skill `frontend` (design genérico) não trata destes pontos; ficam formalizados
+aqui como regra própria do projeto, pois já orientaram decisões anteriores:
+
+- **Zero "estética de IA" vazia**: nada de dados/status/números mockados que não
+  levam a lugar nenhum (contadores inventados, badges/logos falsos, gráficos
+  decorativos sem dado real). Se o dado real não existe, não exibir — nunca
+  inventar. Todo elemento interativo leva a algo real (sem `href="#"` órfão ou
+  handler vazio).
+- **Movimento com propósito**: easing natural, timing curto (~150–450ms),
+  continuidade sem "pulos" de layout. Nada de animação decorativa que não
+  reforce a leitura do conteúdo.
+- **Scroll interativo (quando pedido)**: reveal on scroll, parallax por
+  camadas, scrub atrelado ao scroll, pin/sticky com transformação. Priorizar
+  `IntersectionObserver` + transforms/opacity (GPU); sempre com fallback
+  estático e respeitando `prefers-reduced-motion` e `settings.motionEnabled`
+  (`src/App.tsx`).
 
 ## Tom de voz e diretrizes de conteúdo
 

@@ -16,7 +16,7 @@
   background: radial-gradient(
     circle,
     var(--color-magenta),
-    rgba(138, 43, 226, 0.4) 45%,
+    color-mix(in srgb, var(--color-violet) 40%, transparent) 45%,
     transparent 72%
   );
   filter: blur(134px);
@@ -32,15 +32,15 @@
   border-radius: var(--radius-xl);
   background: linear-gradient(
     135deg,
-    rgba(0, 255, 255, 0.28),
-    rgba(147, 112, 219, 0.22) 45%,
-    rgba(255, 0, 255, 0.3)
+    color-mix(in srgb, var(--color-cyan) 28%, transparent),
+    color-mix(in srgb, var(--color-purple-medium) 22%, transparent) 45%,
+    color-mix(in srgb, var(--color-magenta) 30%, transparent)
   );
   border: 1px solid var(--border-strong);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 30px 80px rgba(138, 43, 226, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--color-violet) 40%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-fg) 35%, transparent);
   overflow: hidden;
 }
 
@@ -53,7 +53,7 @@
   inset: 0;
   background: radial-gradient(
     120px 120px at 30% 24%,
-    rgba(255, 255, 255, 0.5),
+    color-mix(in srgb, var(--color-fg) 50%, transparent),
     transparent 60%
   );
 }
@@ -67,7 +67,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.35),
+    color-mix(in srgb, var(--color-fg) 35%, transparent),
     transparent
   );
   transform: rotate(18deg);

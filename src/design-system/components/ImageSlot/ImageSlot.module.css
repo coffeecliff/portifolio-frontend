@@ -4,10 +4,10 @@
   place-items: center;
   background: linear-gradient(
     135deg,
-    rgba(147, 112, 219, 0.22),
-    rgba(255, 0, 255, 0.08)
+    color-mix(in srgb, var(--color-purple-medium) 22%, transparent),
+    color-mix(in srgb, var(--color-magenta) 8%, transparent)
   );
-  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border: 1px dashed var(--border-medium);
 }
 
 .label {
@@ -15,7 +15,7 @@
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-faint);
 }
 
 .image {

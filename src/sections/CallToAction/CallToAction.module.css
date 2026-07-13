@@ -1,7 +1,7 @@
 .section {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 30px 24px 70px;
+  padding: 30px var(--space-md) 70px;
   scroll-margin-top: 96px;
 }
 
@@ -20,7 +20,7 @@
   z-index: -1;
   background: radial-gradient(
     600px 300px at 50% 0%,
-    rgba(255, 0, 255, 0.18),
+    color-mix(in srgb, var(--color-magenta) 18%, transparent),
     transparent 70%
   );
   pointer-events: none;

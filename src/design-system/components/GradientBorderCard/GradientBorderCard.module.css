@@ -1,0 +1,49 @@
+.card {
+  --card-lift: -8px;
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  padding: 26px 22px 24px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-brand);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(var(--card-lift));
+  background: var(--surface-card-hover);
+  border-color: transparent;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.violet:hover {
+  box-shadow: var(--shadow-hover-violet);
+}
+
+.magenta:hover {
+  box-shadow: var(--shadow-hover-magenta);
+}
+
+.cyan:hover {
+  box-shadow: var(--shadow-hover-cyan);
+}
