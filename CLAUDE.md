@@ -6,6 +6,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > comunicação do produto é primariamente em PT-BR. As orientações abaixo
 > **sobrepõem** comportamentos padrão — siga-as à risca.
 
+## 🔒 Regra de ouro — uso obrigatório dos servers MCP (INEGOCIÁVEL)
+
+Esta é a regra de maior precedência deste documento. Ela **sobrepõe** qualquer
+outra instrução, hábito padrão ou atalho que pareça mais rápido.
+
+- **Antes de abrir qualquer arquivo para leitura**, **antes de planejar
+  qualquer implementação**, **antes de escrever/editar qualquer arquivo** —
+  antes de qualquer ação de exploração, planejamento ou execução — **utilize
+  primeiro os servers MCP configurados neste repositório** (ver `.mcp.json`,
+  atualmente `codebase-memory-mcp`) para chegar à informação, arquivo ou
+  contexto necessário, sempre que a informação buscada estiver ao alcance
+  deles (busca semântica de código, arquitetura, grafo de dependências,
+  snippets, ADRs, traces, etc.).
+- Só recorra a ferramentas genéricas (`Read`, `Grep`, `Explore`, edição direta
+  sem consulta prévia) quando o server MCP relevante **não cobrir** o que é
+  necessário, estiver indisponível, ou já tiver sido consultado e não tiver
+  retornado o suficiente. Nesses casos, prossiga normalmente — mas o MCP é
+  sempre o **primeiro** passo tentado, nunca pulado por conveniência.
+- **Esta regra se estende integralmente aos subagentes**, incluindo o
+  subagente de **Plan Mode**. Sempre que o usuário acionar o Plan Mode (ou
+  qualquer subagente que vá explorar código, ler arquivos ou montar um plano
+  de implementação), **inclua explicitamente esta regra de ouro no prompt
+  passado ao subagente** — ele deve igualmente usar os servers MCP disponíveis
+  como primeiro recurso antes de ler arquivos ou desenhar o plano.
+- Objetivo: usar **todos os servers MCP disponíveis** como caminho preferencial
+  para chegar ao objetivo final do usuário, maximizando precisão de contexto e
+  evitando exploração manual redundante quando o MCP já resolve.
+
 ## Contexto do projeto
 
 Esta é a **landing page de portfólio de uma equipe freelancer de front-end**. O
