@@ -161,6 +161,20 @@ function ShowcaseProjects() {
     >
       <div className={styles.stage} ref={stageRef}>
         <div className={styles.frame}>
+          <div className={styles.blobs} aria-hidden="true">
+            <div className={`${styles.cluster} ${styles.clusterBottomLeft}`}>
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+            </div>
+            <div className={`${styles.cluster} ${styles.clusterTopRight}`}>
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+              <span className={styles.bubble} />
+            </div>
+          </div>
           <div className={styles.split}>
             <TextColumn active={activeIndex} />
 

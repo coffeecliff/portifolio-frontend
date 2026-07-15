@@ -67,6 +67,125 @@
 }
 
 /*
+ * Bolhas "lava lamp" magenta no fundo imersivo — surgem junto com o gradiente
+ * (mesmo var(--zoom) do ::before), ficam abaixo do conteúdo (.split, z-index 1).
+ * Cada canto é um cluster de bolhas nítidas (borda bem definida, blur curto) que
+ * sobem/descem e oscilam de escala em ritmo rápido e assíncrono — só
+ * transform+opacity (GPU-friendly). ShowcaseProjects só renderiza com
+ * motionAllowed=true, então o loop nunca roda com prefers-reduced-motion /
+ * settings.motionEnabled=false.
+ */
+.blobs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: var(--zoom);
+  pointer-events: none;
+}
+
+.cluster {
+  position: absolute;
+  width: 40vw;
+  max-width: 560px;
+  height: 40vw;
+  max-height: 560px;
+}
+
+.clusterBottomLeft {
+  left: -12%;
+  bottom: -16%;
+}
+
+.clusterTopRight {
+  right: -12%;
+  top: -16%;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--color-magenta) 62%, white 8%) 0%,
+    color-mix(in srgb, var(--color-magenta) 38%, transparent) 55%,
+    transparent 76%
+  );
+  filter: blur(10px);
+  will-change: transform;
+}
+
+/* Cada bolha tem tamanho, posição, duração e delay próprios — evita simetria
+   robótica e aproxima do movimento orgânico/assíncrono de uma lava lamp real. */
+.cluster > .bubble:nth-child(1) {
+  width: 46%;
+  height: 46%;
+  left: 4%;
+  bottom: 2%;
+  animation: bubbleRise1 7s ease-in-out infinite;
+}
+
+.cluster > .bubble:nth-child(2) {
+  width: 30%;
+  height: 30%;
+  left: 42%;
+  bottom: 28%;
+  animation: bubbleRise2 9s ease-in-out infinite 0.6s;
+}
+
+.cluster > .bubble:nth-child(3) {
+  width: 22%;
+  height: 22%;
+  left: 14%;
+  bottom: 46%;
+  animation: bubbleRise3 6s ease-in-out infinite 1.4s;
+}
+
+.cluster > .bubble:nth-child(4) {
+  width: 16%;
+  height: 16%;
+  left: 54%;
+  bottom: 6%;
+  animation: bubbleRise2 8s ease-in-out infinite 2.1s;
+}
+
+@keyframes bubbleRise1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6%, -22%) scale(1.18);
+  }
+}
+
+@keyframes bubbleRise2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-8%, -28%) scale(0.85);
+  }
+}
+
+@keyframes bubbleRise3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(9%, -18%) scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
+}
+
+/*
  * Coluna de conteúdo travada na MESMA largura das outras seções (var(--box-w),
  * = container-max − gutter) e centrada, em qualquer nível de zoom. Os 48px de
  * padding lateral espelham o gutter do GlassPanel, então texto e mídia caem
