@@ -1,6 +1,7 @@
 import { Nav } from './components/Nav/Nav';
 import { Hero } from './components/Hero/Hero';
 import { WaveCanvas } from './components/Hero/WaveCanvas';
+import { LiquidGlassDefs } from './design-system';
 import { Services } from './sections/Services/Services';
 import { Projects } from './sections/Projects/Projects';
 import { About } from './sections/About/About';
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <MotionProvider enabled={settings.motionEnabled}>
       <div className={styles.root}>
+        <LiquidGlassDefs />
         {/* Glows ambientes fixos + onda interativa atrás de tudo */}
         <div className={styles.ambient} />
         <WaveCanvas

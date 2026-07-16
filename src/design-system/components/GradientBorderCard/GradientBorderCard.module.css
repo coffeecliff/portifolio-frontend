@@ -2,15 +2,55 @@
   --card-lift: -8px;
   position: relative;
   width: 100%;
-  border-radius: var(--radius-lg);
+  border-radius: var(--lg-radius);
   padding: 26px 22px 24px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--lg-tint);
+  border: 1px solid var(--lg-border);
+  backdrop-filter: var(--lg-backdrop);
+  -webkit-backdrop-filter: var(--lg-backdrop);
+  box-shadow: var(--lg-shadow);
   overflow: hidden;
+  isolation: isolate;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease,
     background 0.3s ease;
 }
 
+@supports (backdrop-filter: url(#liquid-glass)) or (-webkit-backdrop-filter: url(#liquid-glass)) {
+  .card {
+    backdrop-filter: var(--lg-backdrop-refractive);
+    -webkit-backdrop-filter: var(--lg-backdrop-refractive);
+  }
+}
+
+/* Anel de refração forte na borda — sempre visível, por baixo da borda-gradiente de hover. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  backdrop-filter: var(--lg-edge-backdrop);
+  -webkit-backdrop-filter: var(--lg-edge-backdrop);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0.12)
+  );
+  pointer-events: none;
+}
+
+@supports (backdrop-filter: url(#liquid-glass-edge)) or (-webkit-backdrop-filter: url(#liquid-glass-edge)) {
+  .card::after {
+    backdrop-filter: var(--lg-edge-backdrop-refractive);
+    -webkit-backdrop-filter: var(--lg-edge-backdrop-refractive);
+  }
+}
+
+/* Borda-gradiente de marca no hover — fica por cima do anel de refração. */
 .card::before {
   content: '';
   position: absolute;
@@ -24,6 +64,7 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
 .card:hover {
