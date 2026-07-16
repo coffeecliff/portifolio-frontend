@@ -21,5 +21,12 @@ export function GradientBorderCard({
   children,
 }: GradientBorderCardProps) {
   const classes = [styles.card, styles[accent], className].filter(Boolean).join(' ');
-  return <Component className={classes}>{children}</Component>;
+  return (
+    <Component className={classes}>
+      {/* Anel de refração da borda — precisa pintar antes do conteúdo real
+          para que seu backdrop-filter nunca capture os filhos do card. */}
+      <span aria-hidden="true" className={styles.edge} />
+      {children}
+    </Component>
+  );
 }

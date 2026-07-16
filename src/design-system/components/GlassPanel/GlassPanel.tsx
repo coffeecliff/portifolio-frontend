@@ -23,5 +23,12 @@ export function GlassPanel({
   const classes = [styles.panel, styles[variant], className]
     .filter(Boolean)
     .join(' ');
-  return <Tag className={classes}>{children}</Tag>;
+  return (
+    <Tag className={classes}>
+      {/* Anel de refração da borda — precisa pintar antes do conteúdo real
+          para que seu backdrop-filter nunca capture os filhos do painel. */}
+      <span aria-hidden="true" className={styles.edge} />
+      {children}
+    </Tag>
+  );
 }

@@ -86,17 +86,17 @@
   );
   --lg-border: rgba(255, 255, 255, 0.22);
   /* Refração sutil do corpo inteiro da superfície. */
-  --lg-backdrop: blur(2px) saturate(1.6) brightness(1.05);
-  --lg-backdrop-refractive: url(#liquid-glass) blur(2px) saturate(1.6) brightness(1.05);
-  /* Refração forte, isolada no anel de borda (feita via máscara border-only). */
-  --lg-edge-backdrop: blur(1px) saturate(1.4);
-  --lg-edge-backdrop-refractive: url(#liquid-glass-edge) blur(1px) saturate(1.4);
-  /* Bisel/rim: highlight superior forte + sombra interna inferior + glow +
-     profundidade externa — é o que lê como "vidro grosso" mesmo sem o filtro. */
+  --lg-backdrop: blur(3px) saturate(1.2) brightness(1.02);
+  --lg-backdrop-refractive: url(#liquid-glass) blur(3px) saturate(1.2) brightness(1.02);
+  /* Refração discreta, isolada no anel de borda (feita via máscara border-only). */
+  --lg-edge-backdrop: blur(1.5px) saturate(1.1);
+  --lg-edge-backdrop-refractive: url(#liquid-glass-edge) blur(1.5px) saturate(1.1);
+  /* Bisel/rim: highlight superior suave + sombra interna inferior + glow +
+     profundidade externa — é o que lê como "vidro" mesmo sem o filtro. */
   --lg-shadow: 0 24px 70px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
-    inset 0 0 24px rgba(255, 255, 255, 0.05);
+    inset 0 1px 1px rgba(255, 255, 255, 0.22),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 24px rgba(255, 255, 255, 0.03);
 
   /* ===== Tipografia ===== */
   --font-display: 'Space Grotesk', system-ui, sans-serif;

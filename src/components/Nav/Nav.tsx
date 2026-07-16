@@ -46,6 +46,12 @@ export function Nav() {
       ref={navRef}
       className={motionAllowed ? styles.nav : `${styles.nav} ${styles.noTransition}`}
     >
+      {/* Vidro + anel de refração — elementos reais (não pseudo) que pintam
+          antes de .inner, para que o backdrop-filter nunca capture o
+          logo/links/CTA (ver feedback: refração só de fora da barra pra
+          dentro, nunca do conteúdo interno). */}
+      <span aria-hidden="true" className={styles.glass} />
+      <span aria-hidden="true" className={styles.glassEdge} />
       <div className={styles.inner}>
         <a href="#topo" className={styles.brand}>
           <span className={styles.mark}>{site.brandMark}</span>

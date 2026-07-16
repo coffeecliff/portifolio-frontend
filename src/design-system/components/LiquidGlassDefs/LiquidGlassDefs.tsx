@@ -24,7 +24,7 @@ export function LiquidGlassDefs() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="softNoise"
-            scale={40}
+            scale={12}
             xChannelSelector="R"
             yChannelSelector="G"
           />
@@ -42,7 +42,7 @@ export function LiquidGlassDefs() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="softEdgeNoise"
-            scale={95}
+            scale={30}
             xChannelSelector="R"
             yChannelSelector="G"
           />

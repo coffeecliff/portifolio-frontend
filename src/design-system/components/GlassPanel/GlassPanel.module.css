@@ -6,7 +6,6 @@
   -webkit-backdrop-filter: var(--lg-backdrop);
   border: 1px solid var(--lg-border);
   box-shadow: var(--lg-shadow);
-  isolation: isolate;
 }
 
 @supports (backdrop-filter: url(#liquid-glass)) or (-webkit-backdrop-filter: url(#liquid-glass)) {
@@ -16,9 +15,14 @@
   }
 }
 
-/* Anel de borda — refração isolada e mais forte, via máscara border-only. */
-.panel::after {
-  content: '';
+/*
+ * Anel de refração da borda. Elemento real (não ::after) e primeiro filho no
+ * DOM — pinta antes do conteúdo do painel, então seu backdrop-filter só pode
+ * capturar o que está atrás da superfície inteira, nunca os filhos internos
+ * (títulos, cards etc.). Um ::after pintaria depois deles e os "vazaria" para
+ * dentro do vidro, criando realces fixos que se moveriam junto do painel.
+ */
+.edge {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -30,15 +34,15 @@
   -webkit-backdrop-filter: var(--lg-edge-backdrop);
   background: linear-gradient(
     150deg,
-    rgba(255, 255, 255, 0.35),
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(255, 255, 255, 0.16)
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.08)
   );
   pointer-events: none;
 }
 
 @supports (backdrop-filter: url(#liquid-glass-edge)) or (-webkit-backdrop-filter: url(#liquid-glass-edge)) {
-  .panel::after {
+  .edge {
     backdrop-filter: var(--lg-edge-backdrop-refractive);
     -webkit-backdrop-filter: var(--lg-edge-backdrop-refractive);
   }
@@ -56,8 +60,8 @@
   );
   border-color: color-mix(in srgb, var(--color-fg) 14%, transparent);
   box-shadow: 0 20px 60px color-mix(in srgb, var(--color-violet) 28%, transparent),
-    inset 0 1px 1px rgba(255, 255, 255, 0.35),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.06);
 }
 
 @media (max-width: 640px) {
