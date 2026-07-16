@@ -27,18 +27,61 @@
   bottom: 0;
   z-index: -1;
   pointer-events: none;
-  border-radius: calc(var(--nav-progress, 1) * 18px);
-  background: var(--surface-glass);
-  backdrop-filter: blur(11px);
-  -webkit-backdrop-filter: blur(11px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-violet) 18%, transparent);
+  border-radius: calc(var(--nav-progress, 1) * var(--lg-radius-bar));
+  background: var(--lg-tint);
+  backdrop-filter: var(--lg-backdrop);
+  -webkit-backdrop-filter: var(--lg-backdrop);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-shadow);
   opacity: var(--nav-progress, 1);
   transition: top 0.25s ease-out, left 0.25s ease-out, right 0.25s ease-out,
     border-radius 0.25s ease-out, opacity 0.25s ease-out;
 }
 
-.noTransition::before {
+@supports (backdrop-filter: url(#liquid-glass)) or (-webkit-backdrop-filter: url(#liquid-glass)) {
+  .nav::before {
+    backdrop-filter: var(--lg-backdrop-refractive);
+    -webkit-backdrop-filter: var(--lg-backdrop-refractive);
+  }
+}
+
+/* Anel de borda — refração forte, acompanha o docking via --nav-progress. */
+.nav::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--nav-progress, 1) * 18px);
+  left: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  right: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: calc(var(--nav-progress, 1) * var(--lg-radius-bar));
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  backdrop-filter: var(--lg-edge-backdrop);
+  -webkit-backdrop-filter: var(--lg-edge-backdrop);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.16)
+  );
+  opacity: var(--nav-progress, 1);
+  transition: top 0.25s ease-out, left 0.25s ease-out, right 0.25s ease-out,
+    border-radius 0.25s ease-out, opacity 0.25s ease-out;
+}
+
+@supports (backdrop-filter: url(#liquid-glass-edge)) or (-webkit-backdrop-filter: url(#liquid-glass-edge)) {
+  .nav::after {
+    backdrop-filter: var(--lg-edge-backdrop-refractive);
+    -webkit-backdrop-filter: var(--lg-edge-backdrop-refractive);
+  }
+}
+
+.noTransition::before,
+.noTransition::after {
   transition: none;
 }
 
