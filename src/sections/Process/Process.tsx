@@ -7,40 +7,65 @@ import styles from './Process.module.css';
 
 /** Duração de cada etapa em autoplay antes de avançar para a próxima. */
 const AUTOPLAY_MS = 6000;
-const TICK_MS = 40;
 
 /**
  * "Como trabalhamos" — títulos das etapas à esquerda avançam sozinhos (ou por
  * clique), a linha central marca o progresso "tipo timestamp" de cada etapa,
- * e a descrição correspondente aparece à direita. Autoplay pausa no hover e
- * respeita `useMotionAllowed` (sem autoplay/animação quando reduzido).
+ * e a descrição correspondente aparece à direita.
+ *
+ * O autoplay roda num único loop de `requestAnimationFrame` medindo tempo
+ * real decorrido (delta entre frames), não um contador de "ticks": começa no
+ * mount (assim que a página carrega) e nunca é pausado por
+ * IntersectionObserver/scroll — a seção pode estar fora da tela que o
+ * progresso continua contando corretamente, sem depender de re-renders (só
+ * `active` muda de estado quando uma etapa vira a próxima). Pausa apenas no
+ * hover (interação explícita do usuário) e respeita `useMotionAllowed` (sem
+ * autoplay/animação quando reduzido).
  */
 export function Process() {
   const motionAllowed = useMotionAllowed();
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
   const pausedRef = useRef(false);
+  const elapsedRef = useRef(0);
 
   const select = (index: number) => {
     setActive(index);
     setProgress(0);
+    elapsedRef.current = 0;
   };
 
   useEffect(() => {
     if (!motionAllowed) return;
-    const increment = (TICK_MS / AUTOPLAY_MS) * 100;
-    const id = window.setInterval(() => {
-      if (pausedRef.current) return;
-      setProgress((current) => {
-        if (current + increment >= 100) {
-          setActive((a) => (a + 1) % processSteps.length);
-          return 0;
-        }
-        return current + increment;
-      });
-    }, TICK_MS);
-    return () => window.clearInterval(id);
-  }, [motionAllowed, active]);
+    let raf = 0;
+    let lastTimestamp: number | null = null;
+
+    const tick = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const delta = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+
+      if (!pausedRef.current) {
+        elapsedRef.current += delta;
+      }
+
+      if (elapsedRef.current >= AUTOPLAY_MS) {
+        // Zera junto com a troca de etapa — nunca deixa a etapa nova herdar
+        // o progresso 100% da anterior por um frame (o que gerava um "flash"
+        // cheio antes de recomeçar do zero).
+        elapsedRef.current = 0;
+        setProgress(0);
+        setActive((a) => (a + 1) % processSteps.length);
+      } else {
+        setProgress((elapsedRef.current / AUTOPLAY_MS) * 100);
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [motionAllowed]);
 
   const current = processSteps[active];
 
