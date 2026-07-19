@@ -11,21 +11,25 @@ import { Testimonials } from './sections/Testimonials/Testimonials';
 import { CallToAction } from './sections/CallToAction/CallToAction';
 import { Footer } from './sections/Footer/Footer';
 import { MotionProvider } from './motion/MotionContext';
+import { ScrollInertia } from './motion/ScrollInertia';
 import styles from './App.module.css';
 
 /**
  * Configuração de interatividade de nível de página.
  * `motionEnabled` liga/desliga animações (respeitado também via
- * prefers-reduced-motion no MotionProvider); `waveDensity` controla a onda.
+ * prefers-reduced-motion no MotionProvider); `waveDensity` controla a onda;
+ * `scrollInertia` liga o leve momentum ao parar de rolar a página (desktop).
  */
 const settings = {
   motionEnabled: true,
   waveDensity: 24,
+  scrollInertia: true,
 };
 
 export default function App() {
   return (
     <MotionProvider enabled={settings.motionEnabled}>
+      <ScrollInertia enabled={settings.scrollInertia} />
       <div className={styles.root}>
         <LiquidGlassDefs />
         {/* Glows ambientes fixos + onda interativa atrás de tudo */}
