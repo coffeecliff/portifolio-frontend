@@ -5,7 +5,7 @@ import styles from './Intro.module.css';
 
 const TYPE_INTERVAL_MS = 110;
 const HOLD_MS = 2000;
-const ERASE_INTERVAL_MS = 130;
+const ERASE_INTERVAL_MS = 320;
 const EXIT_MS = 650;
 
 type Phase = 'typing' | 'holding' | 'erasing' | 'exiting';
