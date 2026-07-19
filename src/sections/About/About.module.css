@@ -5,11 +5,9 @@
   scroll-margin-top: 96px;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: start;
+.intro {
+  max-width: 680px;
+  margin-bottom: 40px;
 }
 
 .paragraph {
@@ -27,45 +25,175 @@
   margin-bottom: 0;
 }
 
-.pillars {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.pillarWrap {
+/* Fallback (sem stack sticky): lista simples com espaçamento normal. */
+.stack {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.pillar {
-  --card-lift: -6px;
-  padding: 22px 20px;
+.tile {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 42%);
+  align-items: center;
+  gap: 32px;
+  min-height: 240px;
+  padding: 28px 0 28px 28px;
 }
 
-.pillarTitle {
+.tileBody {
+  min-width: 0;
+}
+
+.tileTitle {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 17px;
+  font-size: 22px;
   line-height: 1.2;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
 }
 
-.pillarDesc {
+.tileDesc {
   margin: 0;
-  font-size: 13.5px;
+  max-width: 48ch;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--text-subtle);
 }
 
+.tileMedia {
+  position: relative;
+  align-self: stretch;
+  min-height: 180px;
+  margin: -28px -28px -28px 0;
+  overflow: hidden;
+}
+
+.tileImg,
+.tilePlaceholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tileImg {
+  object-fit: cover;
+}
+
+.tilePlaceholder {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-purple-medium) 22%, transparent),
+    color-mix(in srgb, var(--color-magenta) 8%, transparent)
+  );
+}
+
+.tileFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-ink) 0%,
+    color-mix(in srgb, var(--color-ink) 40%, transparent) 34%,
+    transparent 72%
+  );
+}
+
+/*
+ * Stack "sticky" — cada tile ancora perto do topo da viewport e a próxima,
+ * com z-index maior, desliza por cima ao rolar, cobrindo-a e deixando só uma
+ * borda empilhada visível (top escalonado por índice). Puramente CSS nativo
+ * (position: sticky), sem listener de scroll. Bordas retas nas tiles do meio
+ * — só a primeira/última mantêm o raio — para a pilha ler como uma coluna
+ * contínua, igual à referência.
+ */
+.stacked {
+  gap: 0;
+}
+
+.stacked .tileWrap {
+  position: sticky;
+}
+
+/*
+ * Fundo quase opaco só no contexto empilhado: a tile precisa esconder de
+ * verdade o conteúdo da tile anterior por baixo (só a borda escalonada deve
+ * "espiar"). Com o tint translúcido padrão do GradientBorderCard, o texto de
+ * baixo vaza pelo blur e cria ghosting ilegível. Mantém o anel/glow/hover
+ * intactos — só o preenchimento do corpo muda.
+ */
+.stacked .tileWrap .tile {
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-bg) 85%, var(--color-violet) 10%),
+    color-mix(in srgb, var(--color-bg) 92%, var(--color-magenta) 4%)
+  );
+}
+
+.stacked .tileWrap:nth-child(1) {
+  top: 112px;
+  z-index: 1;
+}
+
+.stacked .tileWrap:nth-child(2) {
+  top: 130px;
+  z-index: 2;
+}
+
+.stacked .tileWrap:nth-child(3) {
+  top: 148px;
+  z-index: 3;
+}
+
+.stacked .tileWrap:nth-child(4) {
+  top: 166px;
+  z-index: 4;
+}
+
+.stacked .tileWrap:not(:first-child) .tile {
+  border-radius: 0;
+}
+
+.stacked .tileWrap:last-child .tile {
+  border-radius: 0 0 var(--lg-radius) var(--lg-radius);
+}
+
 @media (max-width: 900px) {
-  .layout {
+  .tile {
     grid-template-columns: 1fr;
-    gap: 32px;
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .tileMedia {
+    order: -1;
+    min-height: 150px;
+    margin: -24px -24px 20px;
+  }
+
+  .tileFade {
+    background: linear-gradient(
+      180deg,
+      transparent 40%,
+      var(--color-ink)
+    );
   }
 }
 
-@media (max-width: 520px) {
-  .pillars {
-    grid-template-columns: 1fr;
+/* Telas curtas/estreitas não têm folga vertical para o efeito de pin —
+   volta para a lista simples com espaçamento. */
+@media (max-width: 760px) {
+  .stacked {
+    gap: 20px;
+  }
+
+  .stacked .tileWrap {
+    position: static;
+  }
+
+  .stacked .tileWrap:not(:first-child) .tile,
+  .stacked .tileWrap:last-child .tile {
+    border-radius: var(--lg-radius);
   }
 }
