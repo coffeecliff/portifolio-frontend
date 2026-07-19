@@ -14,12 +14,7 @@
   --color-purple-medium: #9370db; /* roxo médio (vidro) */
   --color-ink: #08030f; /* quase-preto (superfícies imersivas / legendas sobre imagem) */
 
-  /* ===== Superfícies de vidro (glassmorphism) ===== */
-  --surface-glass: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.02)
-  );
+  /* ===== Superfícies de conteúdo (nested, sem backdrop-filter) ===== */
   --surface-card: rgba(255, 255, 255, 0.04);
   --surface-card-hover: rgba(255, 255, 255, 0.07);
   /* Fundo sólido imersivo — destino da transição glass → opaco (scroll-driven) */
@@ -67,36 +62,68 @@
   /* ===== Sombras / glows ===== */
   --glow-magenta: 0 0 30px rgba(255, 0, 255, 0.45);
   --glow-magenta-strong: 0 0 44px rgba(255, 0, 255, 0.8);
-  --shadow-glass: 0 20px 60px rgba(138, 43, 226, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
   /* ===== Liquid Glass (Apple-style) =====
-   * Fonte única do efeito de refração — trocar/reverter o "espetáculo visual"
-   * do vidro deve significar mexer só aqui. Consumido por GlassPanel, Nav e
-   * GradientBorderCard. Os filtros SVG referenciados (#liquid-glass e
-   * #liquid-glass-edge) são montados uma única vez em App.tsx via
-   * <LiquidGlassDefs /> (design-system/components/LiquidGlassDefs).
+   * Fonte única do material de vidro — trocar/reverter o "espetáculo visual"
+   * do vidro deve significar mexer só aqui. Duas famílias de token:
+   *
+   * - REGULAR (--lg-*): variante default (blur forte + resposta de cor do
+   *   fundo + specular). Usada nas superfícies-assinatura (GlassPanel
+   *   default/brand, Nav) e, sem o lensing/refração, também nos cards em
+   *   grade (GradientBorderCard) — "regular limpo".
+   * - CLEAR (--lg-clear-*): translúcida, para vidro sobre mídia/controles
+   *   compactos (Button ghost, painéis sobre imagens/screenshots).
+   *
+   * A refração de borda (lensing, os filtros SVG #liquid-glass e
+   * #liquid-glass-edge — montados uma vez em App.tsx via <LiquidGlassDefs/>)
+   * é cara e fica reservada às superfícies-assinatura: nunca aplicar em
+   * listas de cards (ver GradientBorderCard, que usa só --lg-backdrop).
    */
   --lg-radius: 32px; /* squircle Apple — corpo das superfícies */
   --lg-radius-bar: 28px; /* raio máximo da barra do topo docada */
+
+  /* --- Regular --- */
+  --lg-blur: 16px;
+  --lg-saturate: 180%;
+  --lg-brightness: 1.04;
   --lg-tint: linear-gradient(
     150deg,
     rgba(255, 255, 255, 0.1),
     rgba(255, 255, 255, 0.03)
   );
   --lg-border: rgba(255, 255, 255, 0.22);
-  /* Refração sutil do corpo inteiro da superfície. */
-  --lg-backdrop: blur(3px) saturate(1.2) brightness(1.02);
-  --lg-backdrop-refractive: url(#liquid-glass) blur(3px) saturate(1.2) brightness(1.02);
+  --lg-backdrop: blur(var(--lg-blur)) saturate(var(--lg-saturate))
+    brightness(var(--lg-brightness));
+  --lg-backdrop-refractive: url(#liquid-glass) blur(var(--lg-blur))
+    saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
   /* Refração discreta, isolada no anel de borda (feita via máscara border-only). */
-  --lg-edge-backdrop: blur(1.5px) saturate(1.1);
-  --lg-edge-backdrop-refractive: url(#liquid-glass-edge) blur(1.5px) saturate(1.1);
+  --lg-edge-blur: 5px;
+  --lg-edge-saturate: 150%;
+  --lg-edge-backdrop: blur(var(--lg-edge-blur)) saturate(var(--lg-edge-saturate));
+  --lg-edge-backdrop-refractive: url(#liquid-glass-edge) blur(var(--lg-edge-blur))
+    saturate(var(--lg-edge-saturate));
   /* Bisel/rim: highlight superior suave + sombra interna inferior + glow +
      profundidade externa — é o que lê como "vidro" mesmo sem o filtro. */
-  --lg-shadow: 0 24px 70px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.22),
+  --lg-shadow: 0 24px 70px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.26),
     inset 0 -1px 1px rgba(255, 255, 255, 0.05),
-    inset 0 0 24px rgba(255, 255, 255, 0.03);
+    inset 0 0 28px rgba(255, 255, 255, 0.035);
+
+  /* --- Clear (só sobre mídia/controles compactos) --- */
+  --lg-clear-blur: 9px;
+  --lg-clear-saturate: 150%;
+  --lg-clear-bg: rgba(255, 255, 255, 0.05);
+  --lg-clear-border: rgba(255, 255, 255, 0.16);
+  --lg-clear-backdrop: blur(var(--lg-clear-blur)) saturate(var(--lg-clear-saturate));
+  --lg-clear-shadow: 0 14px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  /* Escurecimento sob a variante clear — só entra sobre fundo claro; no
+     projeto (dark-mode only) fica disponível, mas normalmente não é usado. */
+  --lg-clear-dim: rgba(0, 0, 0, 0.35);
+
+  /* --- Interactive: brilho specular que segue o ponteiro (Nav, cards) --- */
+  --lg-glow-size: 480px;
+  --lg-glow-color: color-mix(in srgb, var(--color-violet) 35%, transparent);
 
   /* ===== Tipografia ===== */
   --font-display: 'Space Grotesk', system-ui, sans-serif;

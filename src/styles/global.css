@@ -42,3 +42,30 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/*
+ * Acessibilidade do material de vidro (skill liquid-glass — obrigatório).
+ * Reduce transparency: desliga blur/lensing e sobe a opacidade do tint para
+ * um fundo quase sólido, mantendo o contraste do texto por cima do vidro.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --lg-backdrop: none;
+    --lg-backdrop-refractive: none;
+    --lg-edge-backdrop: none;
+    --lg-edge-backdrop-refractive: none;
+    --lg-clear-backdrop: none;
+    --lg-tint: rgba(10, 6, 18, 0.94);
+    --lg-clear-bg: rgba(10, 6, 18, 0.9);
+  }
+}
+
+/* Increase contrast: reforça bordas e reduz a translucidez do vidro. */
+@media (prefers-contrast: more) {
+  :root {
+    --lg-border: rgba(255, 255, 255, 0.45);
+    --lg-clear-border: rgba(255, 255, 255, 0.4);
+    --text-muted: rgba(255, 255, 255, 0.9);
+    --text-subtle: rgba(255, 255, 255, 0.85);
+  }
+}

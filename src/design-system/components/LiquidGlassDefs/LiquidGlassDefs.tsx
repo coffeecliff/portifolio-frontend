@@ -3,6 +3,14 @@
  * para que `backdrop-filter: url(#…)` (ver tokens --lg-backdrop/--lg-edge-backdrop
  * em tokens.css) consiga referenciá-los. Filtros são estáticos (sem animação de
  * seed): Apple glass não pulsa, e isso evita custo de repaint por frame.
+ *
+ * A distorção é ENVIESADA À BORDA por construção, não por um segundo filtro
+ * complexo: `#liquid-glass` (corpo inteiro do painel) usa um `scale` baixo —
+ * textura de vidro quase neutra no centro. `#liquid-glass-edge` (aplicado só
+ * ao anel de borda mascarado — ver `.edge` em GlassPanel/Nav/GradientBorderCard,
+ * que pinta apenas a moldura de ~1.5px) usa um `scale` bem mais alto — a
+ * refração real, concentrada exatamente onde o vidro "dobra" o fundo. A soma
+ * dos dois elementos é o que lê como lente: centro estável, aresta viva.
  */
 export function LiquidGlassDefs() {
   return (
@@ -24,7 +32,7 @@ export function LiquidGlassDefs() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="softNoise"
-            scale={12}
+            scale={6}
             xChannelSelector="R"
             yChannelSelector="G"
           />
@@ -42,7 +50,7 @@ export function LiquidGlassDefs() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="softEdgeNoise"
-            scale={30}
+            scale={34}
             xChannelSelector="R"
             yChannelSelector="G"
           />

@@ -87,6 +87,37 @@
   transition: none;
 }
 
+/* Brilho specular que segue o ponteiro (interactive — ver usePointerGlow),
+   escopado à mesma geometria docável de .glass. */
+.glowLayer {
+  position: absolute;
+  top: calc(var(--nav-progress, 1) * 18px);
+  left: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  right: calc(var(--nav-progress, 1) * ((100% - var(--layout-width)) / 2));
+  bottom: 0;
+  border-radius: calc(var(--nav-progress, 1) * var(--lg-radius-bar));
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, top 0.25s ease-out, left 0.25s ease-out,
+    right 0.25s ease-out, border-radius 0.25s ease-out;
+}
+
+.glowLayer::before {
+  content: '';
+  position: absolute;
+  top: var(--my, 50%);
+  left: var(--mx, 50%);
+  width: var(--lg-glow-size);
+  height: var(--lg-glow-size);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--lg-glow-color), transparent 70%);
+}
+
+.nav:hover .glowLayer {
+  opacity: 1;
+}
+
 /* Posição fixa do conteúdo: padding equivalente ao estado docado (18px de
    folga + 12px do padding do vidro), pra já nascer no lugar certo. */
 .inner {

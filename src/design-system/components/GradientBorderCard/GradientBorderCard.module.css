@@ -1,3 +1,10 @@
+/*
+ * Vidro "regular limpo": blur + saturate + specular, SEM lensing (refração
+ * via filtro SVG). Cards em grade não são superfície-assinatura — a skill
+ * liquid-glass reserva o lensing (caro, url(#liquid-glass)) para 1–2
+ * superfícies-assinatura (GlassPanel default/brand, Nav). Empilhar refração
+ * em toda uma grade de cards custaria repaint sem ganho perceptível.
+ */
 .card {
   --card-lift: -8px;
   position: relative;
@@ -14,19 +21,13 @@
     background 0.3s ease;
 }
 
-@supports (backdrop-filter: url(#liquid-glass)) or (-webkit-backdrop-filter: url(#liquid-glass)) {
-  .card {
-    backdrop-filter: var(--lg-backdrop-refractive);
-    -webkit-backdrop-filter: var(--lg-backdrop-refractive);
-  }
-}
-
 /*
- * Anel de refração da borda. Elemento real (não ::after) e primeiro filho no
- * DOM — pinta antes do conteúdo do card, então seu backdrop-filter só pode
- * capturar o que está atrás da superfície inteira, nunca os filhos internos
- * (tag, título, texto). Um ::after pintaria depois deles e os "vazaria" para
- * dentro do vidro, criando realces fixos que se moveriam junto do card.
+ * Anel de borda (specular, sem lensing). Elemento real (não ::after) e
+ * primeiro filho no DOM — pinta antes do conteúdo do card, então seu
+ * backdrop-filter só pode capturar o que está atrás da superfície inteira,
+ * nunca os filhos internos (tag, título, texto). Um ::after pintaria depois
+ * deles e os "vazaria" para dentro do vidro, criando realces fixos que se
+ * moveriam junto do card.
  */
 .edge {
   position: absolute;
@@ -47,11 +48,30 @@
   pointer-events: none;
 }
 
-@supports (backdrop-filter: url(#liquid-glass-edge)) or (-webkit-backdrop-filter: url(#liquid-glass-edge)) {
-  .edge {
-    backdrop-filter: var(--lg-edge-backdrop-refractive);
-    -webkit-backdrop-filter: var(--lg-edge-backdrop-refractive);
-  }
+/* Brilho specular que segue o ponteiro (interactive — ver usePointerGlow). */
+.glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.glow::before {
+  content: '';
+  position: absolute;
+  top: var(--my, 30%);
+  left: var(--mx, 50%);
+  width: var(--lg-glow-size);
+  height: var(--lg-glow-size);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--lg-glow-color), transparent 70%);
+}
+
+.card:hover .glow {
+  opacity: 1;
 }
 
 /* Borda-gradiente de marca no hover — fica por cima do anel de refração. */

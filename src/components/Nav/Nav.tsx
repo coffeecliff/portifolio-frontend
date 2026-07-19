@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type PointerEvent } from 'react';
 import { Button } from '@/design-system';
 import { navLinks } from '@/data/navigation';
 import { site } from '@/data/site';
 import { useMotionAllowed } from '@/motion/MotionContext';
+import { usePointerGlow } from '@/motion/usePointerGlow';
 import styles from './Nav.module.css';
 
 /** Distância de scroll (px) até o header terminar de se destacar do fundo. */
@@ -15,8 +16,9 @@ const SCROLL_THRESHOLD = 160;
  * direto no DOM via ref (fora do React) para não gerar re-render por frame.
  */
 export function Nav() {
-  const navRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLElement | null>(null);
   const motionAllowed = useMotionAllowed();
+  const glow = usePointerGlow<HTMLElement>();
 
   useEffect(() => {
     const nav = navRef.current;
@@ -41,9 +43,20 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const setRefs = (node: HTMLElement | null) => {
+    navRef.current = node;
+    glow.ref.current = node;
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
+    glow.onPointerMove?.(event);
+  };
+
   return (
     <nav
-      ref={navRef}
+      ref={setRefs}
+      onPointerMove={onPointerMove}
+      onPointerLeave={glow.onPointerLeave}
       className={motionAllowed ? styles.nav : `${styles.nav} ${styles.noTransition}`}
     >
       {/* Vidro + anel de refração — elementos reais (não pseudo) que pintam
@@ -52,6 +65,7 @@ export function Nav() {
           dentro, nunca do conteúdo interno). */}
       <span aria-hidden="true" className={styles.glass} />
       <span aria-hidden="true" className={styles.glassEdge} />
+      <span aria-hidden="true" className={styles.glowLayer} />
       <div className={styles.inner}>
         <a href="#topo" className={styles.brand}>
           <span className={styles.mark}>{site.brandMark}</span>

@@ -64,6 +64,42 @@
     inset 0 -1px 1px rgba(255, 255, 255, 0.06);
 }
 
+/* Clear — translúcida, sem lensing, para painéis sobre mídia rica. */
+.clear {
+  background: var(--lg-clear-bg);
+  border-color: var(--lg-clear-border);
+  backdrop-filter: var(--lg-clear-backdrop);
+  -webkit-backdrop-filter: var(--lg-clear-backdrop);
+  box-shadow: var(--lg-clear-shadow);
+}
+
+/* Brilho specular que segue o ponteiro (variante interactive). Posicionado
+   por --mx/--my, escritos via JS (usePointerGlow) só quando motion permitido. */
+.glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.glow::before {
+  content: '';
+  position: absolute;
+  top: var(--my, 50%);
+  left: var(--mx, 50%);
+  width: var(--lg-glow-size);
+  height: var(--lg-glow-size);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--lg-glow-color), transparent 70%);
+}
+
+.interactive:hover .glow {
+  opacity: 1;
+}
+
 @media (max-width: 640px) {
   .panel {
     padding: 32px 22px;
