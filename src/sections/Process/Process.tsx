@@ -8,6 +8,45 @@ import styles from './Process.module.css';
 /** Duração de cada etapa em autoplay antes de avançar para a próxima. */
 const AUTOPLAY_MS = 6000;
 
+/** Intervalo entre o início da animação de cada palavra, em ms. */
+const WORD_STEP_MS = 22;
+
+type TypeRevealProps = {
+  text: string;
+  as: 'h3' | 'p';
+  className: string;
+  baseDelay: number;
+  motionAllowed: boolean;
+};
+
+/**
+ * Quebra o texto em palavras e anima cada uma com blur + fade escalonados,
+ * simulando o texto "sendo escrito" com um rastro de fadeout — em vez de um
+ * cursor de máquina de escrever literal, que destoaria do resto da seção.
+ */
+function TypeReveal({ text, as: Tag, className, baseDelay, motionAllowed }: TypeRevealProps) {
+  if (!motionAllowed) {
+    return <Tag className={className}>{text}</Tag>;
+  }
+
+  const words = text.split(' ').filter(Boolean);
+
+  return (
+    <Tag className={className}>
+      {words.map((word, index) => (
+        <span
+          key={index}
+          className={styles.word}
+          style={{ animationDelay: `${baseDelay + index * WORD_STEP_MS}ms` }}
+        >
+          {word}
+          {index < words.length - 1 ? ' ' : ''}
+        </span>
+      ))}
+    </Tag>
+  );
+}
+
 /**
  * "Como trabalhamos" — títulos das etapas à esquerda avançam sozinhos (ou por
  * clique), a linha central marca o progresso "tipo timestamp" de cada etapa,
@@ -137,18 +176,37 @@ export function Process() {
           </div>
 
           <div className={styles.detail} aria-live="polite">
-            <div
-              key={current.step}
-              className={
-                motionAllowed
-                  ? [styles.detailContent, styles.detailContentAnimated].join(' ')
-                  : styles.detailContent
-              }
-            >
-              <span className={styles.detailStep}>{current.step}</span>
-              <h3 className={styles.detailTitle}>{current.title}</h3>
-              <p className={styles.detailDesc}>{current.desc}</p>
-              <p className={styles.detailBody}>{current.detail}</p>
+            <div key={current.step} className={styles.detailContent}>
+              <span
+                className={
+                  motionAllowed
+                    ? [styles.detailStep, styles.detailStepAnimated].join(' ')
+                    : styles.detailStep
+                }
+              >
+                {current.step}
+              </span>
+              <TypeReveal
+                as="h3"
+                text={current.title}
+                className={styles.detailTitle}
+                baseDelay={70}
+                motionAllowed={motionAllowed}
+              />
+              <TypeReveal
+                as="p"
+                text={current.desc}
+                className={styles.detailDesc}
+                baseDelay={180}
+                motionAllowed={motionAllowed}
+              />
+              <TypeReveal
+                as="p"
+                text={current.detail}
+                className={styles.detailBody}
+                baseDelay={320}
+                motionAllowed={motionAllowed}
+              />
             </div>
           </div>
         </div>

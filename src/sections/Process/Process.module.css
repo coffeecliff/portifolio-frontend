@@ -149,10 +149,6 @@
   max-width: 46ch;
 }
 
-.detailContentAnimated {
-  animation: detailFade 0.45s ease;
-}
-
 @keyframes detailFade {
   from {
     opacity: 0;
@@ -171,6 +167,28 @@
   font-size: 14px;
   color: var(--color-cyan);
   margin-bottom: 10px;
+}
+
+.detailStepAnimated {
+  animation: detailFade 0.3s ease;
+}
+
+/* Cada palavra do título/descrição entra com blur + fade escalonados,
+   criando a sensação de texto "sendo escrito" com rastro de fadeout. */
+.word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(4px);
+  animation: wordReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes wordReveal {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
 }
 
 .detailTitle {
