@@ -102,11 +102,13 @@
 
 /*
  * Stack "sticky" — cada tile ancora perto do topo da viewport e a próxima,
- * com z-index maior, desliza por cima ao rolar, cobrindo-a e deixando só uma
+ * com z-index maior, desliza por cima ao rolar, cobrindo-a e deixando uma
  * borda empilhada visível (top escalonado por índice). Puramente CSS nativo
- * (position: sticky), sem listener de scroll. Bordas retas nas tiles do meio
- * — só a primeira/última mantêm o raio — para a pilha ler como uma coluna
- * contínua, igual à referência.
+ * (position: sticky), sem listener de scroll. Todas as tiles mantêm o raio
+ * completo (nenhuma fica com borda reta) — a separação entre elas vem de um
+ * "respiro" opaco (::before, cor do fundo) desenhado no topo de cada tile
+ * (exceto a primeira), que cobre a espiada da anterior e lê como um gap real
+ * entre cards, não uma coluna emendada.
  */
 .stacked {
   gap: 0;
@@ -114,6 +116,13 @@
 
 .stacked .tileWrap {
   position: sticky;
+}
+
+.stacked .tileWrap:not(:first-child)::before {
+  content: '';
+  display: block;
+  height: 18px;
+  background: var(--color-ink);
 }
 
 /*
@@ -137,26 +146,18 @@
 }
 
 .stacked .tileWrap:nth-child(2) {
-  top: 130px;
+  top: 140px;
   z-index: 2;
 }
 
 .stacked .tileWrap:nth-child(3) {
-  top: 148px;
+  top: 168px;
   z-index: 3;
 }
 
 .stacked .tileWrap:nth-child(4) {
-  top: 166px;
+  top: 196px;
   z-index: 4;
-}
-
-.stacked .tileWrap:not(:first-child) .tile {
-  border-radius: 0;
-}
-
-.stacked .tileWrap:last-child .tile {
-  border-radius: 0 0 var(--lg-radius) var(--lg-radius);
 }
 
 @media (max-width: 900px) {
@@ -182,7 +183,8 @@
 }
 
 /* Telas curtas/estreitas não têm folga vertical para o efeito de pin —
-   volta para a lista simples com espaçamento. */
+   volta para a lista simples com espaçamento (o gap já vem do flex; o
+   respiro opaco do pin não faz sentido fora do empilhamento). */
 @media (max-width: 760px) {
   .stacked {
     gap: 20px;
@@ -192,8 +194,7 @@
     position: static;
   }
 
-  .stacked .tileWrap:not(:first-child) .tile,
-  .stacked .tileWrap:last-child .tile {
-    border-radius: var(--lg-radius);
+  .stacked .tileWrap::before {
+    display: none;
   }
 }

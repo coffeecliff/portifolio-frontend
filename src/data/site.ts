@@ -34,7 +34,7 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  brandName: 'Modus',
+  brandName: 'MODUS',
   brandMark: '◈',
   tagline: 'Equipe freelancer de front-end — landing pages e sites de alto padrão.',
 

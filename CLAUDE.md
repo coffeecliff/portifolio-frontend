@@ -66,7 +66,7 @@ tabela** antes de implementar. A composição vive em `src/App.tsx` (dentro de
 | 2 | Hero | `components/Hero` | `#topo` | **Atenção**: proposta de valor + CTA principal |
 | 3 | Serviços | `sections/Services` | `#servicos` | **Interesse**: o que entregamos (benefício) |
 | 4 | Projetos | `sections/Projects` | `#projetos` | **Desejo/prova**: portfólio de trabalhos |
-| 5 | Sobre | `sections/About` | `#sobre` | **Confiança**: quem é o estúdio (posicionamento de marca Modus) |
+| 5 | Sobre | `sections/About` | `#sobre` | **Confiança**: quem é o estúdio (posicionamento de marca MODUS) |
 | 6 | Processo | `sections/Process` | `#processo` | **Reduz risco**: como trabalhamos |
 | 7 | Tecnologias | `sections/Tech` | `#tecnologias` | **Reforço**: por que o site é rápido/fluido/bonito — resultado, não jargão |
 | 8 | Depoimentos | `sections/Testimonials` | `#depoimentos` | **Prova social** (só renderiza com depoimento real; senão retorna `null`) |
@@ -222,7 +222,7 @@ original** do Claude Design e **não** refletem o posicionamento real da equipe
 freelancer. Trate-os como provisórios e alinhe-os ao contexto acima quando for
 mexer neles:
 
-- `src/data/site.ts` — nome de marca (`Modus`) definido; canais de contato
+- `src/data/site.ts` — nome de marca (`MODUS`) definido; canais de contato
   (WhatsApp/e-mail/Instagram/LinkedIn) ainda são provisórios; trocar pelos dados
   reais da equipe antes de publicar.
 - `src/data/projects.ts` — projetos de exemplo por segmento ("Portfólio em
