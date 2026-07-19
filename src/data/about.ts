@@ -30,7 +30,7 @@ export const about: AboutContent = {
   eyebrow: 'Sobre o estúdio',
   title: 'Um estúdio enxuto, obcecado por acabamento',
   paragraphs: [
-    'A VÉRTICE nasceu para resolver um problema simples: a maioria dos sites parece igual e não vende. Somos uma equipe de front-end que trata cada projeto como a nossa própria vitrine, do primeiro pixel à entrega final.',
+    'A Modus nasceu para resolver um problema simples: a maioria dos sites parece igual e não vende. Somos uma equipe de front-end que trata cada projeto como a nossa própria vitrine, do primeiro pixel à entrega final.',
     'Trabalhamos unidos, sem intermediários e sem burocracia de agência. Isso significa comunicação direta, decisões rápidas e um cuidado artesanal com cada detalhe da sua presença digital, não importa o seu segmento.',
   ],
   pillars: [

@@ -34,8 +34,7 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  // Placeholder — substituir pelo nome real da equipe/estúdio.
-  brandName: 'VÉRTICE',
+  brandName: 'Modus',
   brandMark: '◈',
   tagline: 'Equipe freelancer de front-end — landing pages e sites de alto padrão.',
 

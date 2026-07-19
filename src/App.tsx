@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Nav } from './components/Nav/Nav';
 import { Hero } from './components/Hero/Hero';
 import { WaveCanvas } from './components/Hero/WaveCanvas';
+import { Intro } from './components/Intro/Intro';
 import { LiquidGlassDefs } from './design-system';
 import { Services } from './sections/Services/Services';
 import { Projects } from './sections/Projects/Projects';
@@ -27,10 +29,13 @@ const settings = {
 };
 
 export default function App() {
+  const [introDone, setIntroDone] = useState(false);
+
   return (
     <MotionProvider enabled={settings.motionEnabled}>
+      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
       <SmoothScroll enabled={settings.smoothScroll} />
-      <div className={styles.root}>
+      <div className={`${styles.root} ${introDone ? styles.stageReady : styles.stage}`}>
         <LiquidGlassDefs />
         {/* Glows ambientes fixos + onda interativa atrás de tudo */}
         <div className={styles.ambient} />
