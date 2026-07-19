@@ -37,6 +37,12 @@
  * do site. Interpolamos largura/altura via calc(var(--zoom)); sem transform de
  * escala (que deformaria o conteúdo e estouraria a largura das outras boxes).
  */
+/*
+ * Superfície-assinatura: a box pinada é o único destaque de vidro com lensing
+ * fora de GlassPanel/Nav (ver skill liquid-glass — refração reservada a 1–2
+ * elementos-chave). O blur usa --lg-blur como base, escalado por (1 - zoom)
+ * até desaparecer quando a box vira o fundo imersivo em tela cheia.
+ */
 .frame {
   --box-w: calc(min(var(--container-max), 100vw) - 48px);
   --box-h: min(760px, 86vh);
@@ -47,13 +53,24 @@
   max-height: 100vh;
   overflow: hidden;
   border-radius: calc(var(--radius-xl) * (1 - var(--zoom)));
-  background: var(--surface-glass);
-  border: 1px solid var(--border-glass);
-  box-shadow: var(--shadow-glass);
-  backdrop-filter: blur(calc(12px * (1 - var(--zoom))));
-  -webkit-backdrop-filter: blur(calc(12px * (1 - var(--zoom))));
+  background: var(--lg-tint);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-shadow);
+  backdrop-filter: blur(calc(var(--lg-blur) * (1 - var(--zoom))))
+    saturate(var(--lg-saturate));
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur) * (1 - var(--zoom))))
+    saturate(var(--lg-saturate));
   contain: layout paint;
   will-change: width, height;
+}
+
+@supports (backdrop-filter: url(#liquid-glass)) or (-webkit-backdrop-filter: url(#liquid-glass)) {
+  .frame {
+    backdrop-filter: url(#liquid-glass) blur(calc(var(--lg-blur) * (1 - var(--zoom))))
+      saturate(var(--lg-saturate));
+    -webkit-backdrop-filter: url(#liquid-glass) blur(calc(var(--lg-blur) * (1 - var(--zoom))))
+      saturate(var(--lg-saturate));
+  }
 }
 
 /* Fundo sólido/imersivo que emerge conforme a box preenche a tela. */
@@ -382,6 +399,8 @@
   grid-column: span 2;
 }
 
+/* Conteúdo (screenshot do projeto), não vidro — sem backdrop-filter (a skill
+   reserva vidro à camada de navegação/controle, nunca ao conteúdo). */
 .shotCell {
   position: relative;
   min-width: 0;
@@ -391,7 +410,7 @@
   overflow: hidden;
   border: 1px solid var(--border-glass);
   background: var(--surface-card);
-  box-shadow: var(--shadow-glass);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
 }
 
 .shotCell :global(img),

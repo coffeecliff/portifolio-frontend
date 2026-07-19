@@ -22,8 +22,8 @@
 
 .ghost {
   background: color-mix(in srgb, var(--color-fg) 6%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--lg-clear-backdrop);
+  -webkit-backdrop-filter: var(--lg-clear-backdrop);
   border-color: var(--border-medium);
 }
 
