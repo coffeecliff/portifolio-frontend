@@ -5,7 +5,7 @@ import styles from './Intro.module.css';
 
 const TYPE_INTERVAL_MS = 110;
 const HOLD_MS = 2000;
-const ERASE_INTERVAL_MS = 70;
+const ERASE_INTERVAL_MS = 130;
 const EXIT_MS = 650;
 
 type Phase = 'typing' | 'holding' | 'erasing' | 'exiting';
@@ -25,6 +25,7 @@ export function Intro({ onDone }: IntroProps) {
   const name = site.brandName;
   const [phase, setPhase] = useState<Phase>('typing');
   const [count, setCount] = useState(0);
+  const [erasingFlash, setErasingFlash] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -43,7 +44,14 @@ export function Intro({ onDone }: IntroProps) {
       timerRef.current = setTimeout(() => setPhase('erasing'), HOLD_MS);
     } else if (phase === 'erasing') {
       if (count > 0) {
-        timerRef.current = setTimeout(() => setCount((c) => c - 1), ERASE_INTERVAL_MS);
+        if (!erasingFlash) {
+          timerRef.current = setTimeout(() => setErasingFlash(true), 0);
+        } else {
+          timerRef.current = setTimeout(() => {
+            setCount((c) => c - 1);
+            setErasingFlash(false);
+          }, ERASE_INTERVAL_MS);
+        }
       } else {
         timerRef.current = setTimeout(() => setPhase('exiting'), 0);
       }
@@ -54,7 +62,7 @@ export function Intro({ onDone }: IntroProps) {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [motionAllowed, phase, count, name, onDone]);
+  }, [motionAllowed, phase, count, erasingFlash, name, onDone]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -65,7 +73,8 @@ export function Intro({ onDone }: IntroProps) {
 
   if (!motionAllowed) return null;
 
-  const visible = name.slice(0, count);
+  const chars = name.slice(0, count).split('');
+  const lastIndex = chars.length - 1;
 
   return (
     <div
@@ -74,8 +83,17 @@ export function Intro({ onDone }: IntroProps) {
     >
       <div className={styles.glow} />
       <span className={styles.name}>
-        {visible}
-        <span className={styles.caret} />
+        {chars.map((char, index) => {
+          const isExiting = phase === 'erasing' && index === lastIndex && erasingFlash;
+          return (
+            <span
+              key={index}
+              className={`${styles.char} ${isExiting ? styles.charExit : styles.charEnter}`}
+            >
+              {char}
+            </span>
+          );
+        })}
       </span>
     </div>
   );
