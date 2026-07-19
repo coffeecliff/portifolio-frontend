@@ -5,7 +5,7 @@ import {
   SiVite,
   SiThreedotjs,
   SiNodedotjs,
-  SiFigma,
+  SiJavascript,
 } from 'react-icons/si';
 
 export interface TechItem {
@@ -35,6 +35,11 @@ export const techStack: TechItem[] = [
     icon: SiTypescript,
     benefit: 'Menos bugs e um site estável, a base sólida por trás da entrega.',
   },
+    {
+    name: 'JavaScript',
+    icon: SiJavascript,
+    benefit: 'Linguagem de programação que torna o site interativo e dinâmico.',
+  },
   {
     name: 'Vite',
     icon: SiVite,
@@ -50,9 +55,5 @@ export const techStack: TechItem[] = [
     icon: SiNodedotjs,
     benefit: 'Integrações e automações para o site trabalhar pelo seu negócio.',
   },
-  {
-    name: 'Figma',
-    icon: SiFigma,
-    benefit: 'Você aprova o visual antes de programarmos, sem surpresas no final.',
-  },
+
 ];
